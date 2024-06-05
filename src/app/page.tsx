@@ -1,10 +1,10 @@
-import FaceDetection from "./components/FaceDetection";
+import DashboardComponent from "./components/DashboardComponent";
 
 export default function Home() {
   return (
     <main className="">
-      <h1>Welcome to the Face Detection App</h1>
-      <FaceDetection />
+      <h1 className="text-2xl font-bold my-4 ml-4">🚧 AffectiveADHD Testing 🚧</h1>
+      <DashboardComponent />
     </main>
   );
 }

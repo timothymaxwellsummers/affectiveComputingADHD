@@ -2,22 +2,31 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as faceapi from 'face-api.js';
 
-interface FaceDetectionProps {
-  onGazeUpdate: (lookingAtScreen: boolean) => void;
+interface EmotionData {
+  happy: number;
+  sad: number;
+  angry: number;
+  fearful: number;
+  disgusted: number;
+  surprised: number;
+  neutral: number;
 }
 
-const FaceDetection: React.FC<FaceDetectionProps> = ({ onGazeUpdate }) => {
+interface EmotionDetectionProps {
+  onEmotionUpdate: (emotions: EmotionData) => void;
+}
+
+const EmotionDetection: React.FC<EmotionDetectionProps> = ({ onEmotionUpdate }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [initializing, setInitializing] = useState(true);
-  const [lookingAtScreen, setLookingAtScreen] = useState(false);
 
   useEffect(() => {
     const loadModels = async () => {
       const MODEL_URL = '/models';
       await Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL)
+        faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL)
       ]);
       setInitializing(false);
     };
@@ -51,7 +60,7 @@ const FaceDetection: React.FC<FaceDetectionProps> = ({ onGazeUpdate }) => {
     faceapi.matchDimensions(canvas, displaySize);
 
     setInterval(async () => {
-      const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
+      const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions();
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
       const ctx = canvas.getContext('2d');
@@ -59,33 +68,20 @@ const FaceDetection: React.FC<FaceDetectionProps> = ({ onGazeUpdate }) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         faceapi.draw.drawDetections(canvas, resizedDetections);
-        faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+        faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
 
         if (resizedDetections.length > 0) {
-          const landmarks = resizedDetections[0].landmarks;
-          const nose = landmarks.getNose();
-          const leftEye = landmarks.getLeftEye();
-          const rightEye = landmarks.getRightEye();
-
-          const noseTip = nose[3]; // Tip of the nose
-          const leftEyeCenter = {
-            x: (leftEye[0].x + leftEye[3].x) / 2,
-            y: (leftEye[0].y + leftEye[3].y) / 2
+          const expressions = resizedDetections[0].expressions;
+          const emotions: EmotionData = {
+            happy: expressions.happy,
+            sad: expressions.sad,
+            angry: expressions.angry,
+            fearful: expressions.fearful,
+            disgusted: expressions.disgusted,
+            surprised: expressions.surprised,
+            neutral: expressions.neutral
           };
-          const rightEyeCenter = {
-            x: (rightEye[0].x + rightEye[3].x) / 2,
-            y: (rightEye[0].y + rightEye[3].y) / 2
-          };
-
-          const eyeDirection = {
-            x: (leftEyeCenter.x + rightEyeCenter.x) / 2 - noseTip.x,
-            y: (leftEyeCenter.y + rightEyeCenter.y) / 2 - noseTip.y
-          };
-
-          const lookingAtScreen = Math.abs(eyeDirection.x) < 10 && eyeDirection.y < 10;
-
-          setLookingAtScreen(lookingAtScreen);
-          onGazeUpdate(lookingAtScreen);
+          onEmotionUpdate(emotions);
         }
       }
     }, 100);
@@ -93,7 +89,7 @@ const FaceDetection: React.FC<FaceDetectionProps> = ({ onGazeUpdate }) => {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold">Eye Tracking</h2>
+      <h2 className="text-xl font-semibold">Emotion Tracking</h2>
       {initializing ? (
         <p>Loading...</p>
       ) : (
@@ -119,4 +115,4 @@ const FaceDetection: React.FC<FaceDetectionProps> = ({ onGazeUpdate }) => {
   );
 };
 
-export default FaceDetection;
+export default EmotionDetection;
