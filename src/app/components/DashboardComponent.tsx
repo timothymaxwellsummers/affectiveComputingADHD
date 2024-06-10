@@ -1,8 +1,8 @@
-"use client";
-import React, { useState } from "react";
-import EmotionDetection from "./EmotionDetection";
-import FaceDetection from "./FaceDetection";
-import EmotionBar from "./EmotionBar";
+'use client';
+import React, { useState, useEffect, useRef } from 'react';
+import EmotionDetection from './EmotionDetection';
+import FaceDetection from './FaceDetection';
+import EmotionBar from './EmotionBar';
 
 const Dashboard: React.FC = () => {
   const [emotions, setEmotions] = useState({
@@ -15,6 +15,35 @@ const Dashboard: React.FC = () => {
     neutral: 0,
   });
   const [lookingAtScreen, setLookingAtScreen] = useState(false);
+  const [attentivenessScore, setAttentivenessScore] = useState(100);
+
+  const lookingAtScreenCount = useRef(0);
+  const intervalCount = useRef(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Update attentiveness score every 3 seconds
+      setAttentivenessScore((lookingAtScreenCount.current / intervalCount.current) * 100);
+
+      // Reset counters for the next interval
+      lookingAtScreenCount.current = 0;
+      intervalCount.current = 0;
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Track if user is looking at the screen within the interval
+    const interval = setInterval(() => {
+      intervalCount.current += 1;
+      if (lookingAtScreen) {
+        lookingAtScreenCount.current += 1;
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [lookingAtScreen]);
 
   return (
     <div className="flex h-screen">
@@ -34,12 +63,14 @@ const Dashboard: React.FC = () => {
             <p className="text-lg flex items-center">
               <span
                 className={`w-3 h-3 rounded-full mr-2 ${
-                  lookingAtScreen ? "bg-green-500" : "bg-red-500"
+                  lookingAtScreen ? 'bg-green-500' : 'bg-red-500'
                 }`}
               ></span>
-              {lookingAtScreen ? "Looking at Screen" : "Not Looking at Screen"}
+              {lookingAtScreen ? 'Looking at Screen' : 'Not Looking at Screen'}
             </p>
           </div>
+          <h2 className="text-xl font-semibold">Attentiveness Score</h2>
+          <p className="text-lg">{attentivenessScore.toFixed(2)}</p>
         </div>
         <div>
           <h2 className="text-xl font-semibold">Emotion Tracking</h2>
