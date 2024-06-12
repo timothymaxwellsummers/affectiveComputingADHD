@@ -9,11 +9,11 @@ export const ClickButton = styled.div`
     width: 90px;
     height: 40px;
     text-align: center;
-`
+
 const PopupCard = styled.div`
   width: 300px;
   position: absolute;
-  left: 50%;
+  left: 55%;
   top: 50%;
   margin-left: -150px;
   background-color: white;
