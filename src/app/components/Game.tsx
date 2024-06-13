@@ -8,7 +8,7 @@ const Game: React.FC = () => {
         { name: 'Neon Nibblet', url: 'https://cdn.htmlgames.com/NeonNibblet/' },
         { name: 'Ninja Breakout', url: 'https://cdn.htmlgames.com/NinjaBreakout/' },
         { name: 'Upsidedown', url: 'https://cdn.htmlgames.com/UpsideDown/' },
-        { name: 'Coloring for Kids', url: 'https://cdn.htmlgames.com/ColoringForKids/' }
+        { name: 'Coloring for Kids', url: 'https://cdn.htmlgames.com/ColoringForKids/' },
     ], []);
 
     return (
