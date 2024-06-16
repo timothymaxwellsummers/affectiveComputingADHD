@@ -1,5 +1,13 @@
-export interface Notification {
+export interface AdhdEvent {
+    sessionId: string;
+    eventType: eventType;
+    score: number;
     game: string;
-    emotion: string;
-    emotionScore: number;
+}
+
+export enum eventType {
+    happy,
+    sad,
+    angry,
+    notConcentrating,
 }

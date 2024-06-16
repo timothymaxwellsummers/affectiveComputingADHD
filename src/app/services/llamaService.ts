@@ -2,7 +2,7 @@ import { ChatOllama } from '@langchain/community/chat_models/ollama';
 import { InMemoryChatMessageHistory } from "@langchain/core/chat_history";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { RunnableWithMessageHistory } from "@langchain/core/runnables";
-import { Notification } from '../types/types';
+import { AdhdEvent, eventType } from '../types/types';
 
 
 export class LlamaService {
@@ -19,9 +19,9 @@ export class LlamaService {
         const prompt = ChatPromptTemplate.fromMessages([
             [
                 "system",
-                `You are genrating a notification for a child with ADHD playing a video game. The notifications should only be one sentence. They are intended to increase the child's motivation and engagement with the game.`,
+                `You are generating a notification for a child with ADHD playing a video game. The notifications should only be one sentence long and should be playful and can include emojis. They are intended to increase the child's motivation and engagement with the game. Use the information provided to tailor the message appropriately.`,
             ],
-            ["human", "Game: {game}, Emotion: {emotion}, EmotionScore: {emotionScore}"],
+            ["human", "Game played: {game}, Reason for notification: player is {event}"],
         ]);
 
         const chain = prompt.pipe(this.model);
@@ -41,19 +41,18 @@ export class LlamaService {
         });
     }
 
-    async generateResponse(sessionId: string, notification: Notification): Promise<string> {
+    async generateResponse(adhdEvent: AdhdEvent): Promise<string> {
         const config = {
             configurable: {
-                sessionId,
+                sessionId: adhdEvent.sessionId,
             },
         };
 
         try {
             const stream = await this.withMessageHistory.stream(
                 {
-                    game: notification.game,
-                    emotion: notification.emotion,
-                    emotionScore: notification.emotionScore,
+                    game: adhdEvent.game,
+                    event: adhdEvent.eventType.toString(),
                 },
                 config
             );
