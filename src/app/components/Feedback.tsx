@@ -9,11 +9,13 @@ export const ClickButton = styled.div`
     width: 90px;
     height: 40px;
     text-align: center;
+`;
 
+// Corrected the PopupCard styled-component
 const PopupCard = styled.div`
   width: 300px;
   position: absolute;
-  left: 55%;
+  left: 50%;
   top: 50%;
   margin-left: -150px;
   background-color: white;
@@ -38,6 +40,7 @@ const PopupCard = styled.div`
     border-top: 20px solid white; /* Match background color */
   }
 `;
+
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -45,7 +48,6 @@ const Overlay = styled.div`
   z-index: 999;
   width: 100vw;
   height: 100vh;
-  background-color: black;
   background-color: rgba(0, 0, 0, 0.75);
 `;
 
