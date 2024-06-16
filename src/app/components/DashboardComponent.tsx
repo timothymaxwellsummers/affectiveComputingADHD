@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import EmotionDetection from './EmotionDetection';
 import FaceDetection from './FaceDetection';
 import EmotionBar from './EmotionBar';
+import SymptomLineChart from './Linechart';
 
 const Dashboard: React.FC = () => {
   const [emotions, setEmotions] = useState({
@@ -83,6 +84,7 @@ const Dashboard: React.FC = () => {
           <EmotionBar label="Neutral" value={emotions.neutral} emoji="😐" />
         </div>
       </div>
+      <SymptomLineChart />
     </div>
   );
 };
