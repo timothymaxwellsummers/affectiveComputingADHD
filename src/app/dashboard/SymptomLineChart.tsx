@@ -1,11 +1,12 @@
+'use client';
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const data = [
-    { name: 'Week 1', Symptom1: 30, Symptom2: 45, Symptom3: 20 },
-    { name: 'Week 2', Symptom1: 35, Symptom2: 40, Symptom3: 25 },
-    { name: 'Week 3', Symptom1: 40, Symptom2: 35, Symptom3: 30 },
-    { name: 'Week 4', Symptom1: 45, Symptom2: 30, Symptom3: 35 },
+    { name: 'Week 1',Hyperaktivität : 30, Unaufmerksamkeit: 45, Impulsivität: 20 },
+    { name: 'Week 2', Hyperaktivität: 35, Unaufmerksamkeit: 40, Impulsivität: 25 },
+    { name: 'Week 3', Hyperaktivität: 40, Unaufmerksamkeit: 35, Impulsivität: 30 },
+    { name: 'Week 4', Hyperaktivität: 45, Unaufmerksamkeit: 30, Impulsivität: 35 },
 ];
 
 const SymptomLineChart: React.FC = () => {
@@ -24,9 +25,9 @@ const SymptomLineChart: React.FC = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="Symptom1" stroke="#8884d8" activeDot={{ r: 8 }} />
-                <Line type="monotone" dataKey="Symptom2" stroke="#82ca9d" />
-                <Line type="monotone" dataKey="Symptom3" stroke="#ff7300" />
+                <Line type="monotone" dataKey="Hyperaktivität" stroke="#8884d8" activeDot={{ r: 8 }} />
+                <Line type="monotone" dataKey="Unaufmerksamkeit" stroke="#82ca9d" />
+                <Line type="monotone" dataKey="Impulsivität" stroke="#ff7300" />
             </LineChart>
         </ResponsiveContainer>
     );
