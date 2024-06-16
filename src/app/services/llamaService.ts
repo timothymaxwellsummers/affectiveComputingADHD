@@ -2,6 +2,8 @@ import { ChatOllama } from '@langchain/community/chat_models/ollama';
 import { InMemoryChatMessageHistory } from "@langchain/core/chat_history";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { RunnableWithMessageHistory } from "@langchain/core/runnables";
+import { Notification } from '../types/types';
+
 
 export class LlamaService {
     private model: ChatOllama;
@@ -39,7 +41,7 @@ export class LlamaService {
         });
     }
 
-    async generateResponse(sessionId: string, game: string, emotion: string, emotionScore: number): Promise<string> {
+    async generateResponse(sessionId: string, notification: Notification): Promise<string> {
         const config = {
             configurable: {
                 sessionId,
@@ -49,9 +51,9 @@ export class LlamaService {
         try {
             const stream = await this.withMessageHistory.stream(
                 {
-                    game: game,
-                    emotion: emotion,
-                    emotionScore: emotionScore,
+                    game: notification.game,
+                    emotion: notification.emotion,
+                    emotionScore: notification.emotionScore,
                 },
                 config
             );

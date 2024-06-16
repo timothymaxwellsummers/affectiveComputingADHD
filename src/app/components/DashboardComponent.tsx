@@ -3,7 +3,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import EmotionDetection from './EmotionDetection';
 import FaceDetection from './FaceDetection';
 import EmotionBar from './EmotionBar';
-import NotificationTestComponent from './NotificationTestComponent';
+import { v4 as uuidv4 } from 'uuid';
+import LlamaService from '../services/LlamaService';
+
+const llamaService= new LlamaService('https://ollama.medien.ifi.lmu.de');
 
 const Dashboard: React.FC = () => {
     const [emotions, setEmotions] = useState({
@@ -21,9 +24,45 @@ const Dashboard: React.FC = () => {
     const lookingAtScreenCount = useRef(0);
     const intervalCount = useRef(0);
 
-    const [notification, setNotification] = useState<string | null>(null);
     const [showNotification, setShowNotification] = useState(false);
-    const [lastNotificationTime, setLastNotificationTime] = useState<number | null>(null);
+    const [notificationText, setNotificationText] = useState<string>('');
+    const [sessionId, setSessionId] = useState<string>('');
+
+    useEffect(() => {
+        setSessionId(uuidv4());
+    }, []);
+
+    useEffect(() => {
+        console.log('Attentiveness Score:', attentivenessScore);
+       if (attentivenessScore < 50) {
+           setShowNotification(true);
+       } else {
+           setShowNotification(false);
+       }
+    }, [attentivenessScore]);
+
+    useEffect(() => {
+        if (showNotification) {
+            const notification = {
+                game: 'Snake',
+                emotion: 'happy',
+                emotionScore: 0.5,
+            };
+            const generateNotification = async () => {
+                try {
+                    const response = await llamaService.generateResponse(sessionId, notification);
+                    setNotificationText(response);
+                    console.log('Notification response:', response);
+                } catch (error) {
+                    setNotificationText('Failed to generate notification');
+                }
+            };
+
+            generateNotification();
+        } else {
+            setNotificationText('');
+        }
+    }, [showNotification, sessionId]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -39,32 +78,6 @@ const Dashboard: React.FC = () => {
 
         return () => clearInterval(interval);
     }, []);
-
-    useEffect(() => {
-        const currentTime = Date.now();
-        const timeSinceLastNotification = lastNotificationTime ? currentTime - lastNotificationTime : null;
-
-        if (timeSinceLastNotification === null || timeSinceLastNotification > 20000) {
-            if (emotions.happy > 0.5) {
-                setNotification("happy");
-            } else if (emotions.sad > 0.5) {
-                setNotification("sad");
-            } else if (emotions.angry > 0.5) {
-                setNotification("angry");
-            }
-
-            if (notification) {
-                setShowNotification(true);
-                setLastNotificationTime(currentTime);
-
-                const timeout = setTimeout(() => {
-                    setShowNotification(false);
-                }, 10000);
-
-                return () => clearTimeout(timeout);
-            }
-        }
-    }, [emotions, notification, lastNotificationTime]);
 
     useEffect(() => {
         // Track if user is looking at the screen within the interval
@@ -115,32 +128,10 @@ const Dashboard: React.FC = () => {
                     <EmotionBar label="Surprised" value={emotions.surprised} emoji="😳" />
                     <EmotionBar label="Neutral" value={emotions.neutral} emoji="😐" />
                 </div>
-
-                {showNotification && notification && (
-                    <div className="mt-4 p-2 bg-blue-100 text-blue-900 rounded">
-                        {notification === 'happy' && (
-                            <NotificationTestComponent
-                                game="Snake"
-                                emotion={notification}
-                                emotionScore={emotions.happy}
-                            />
-                        )}
-                        {notification === 'sad' && (
-                            <NotificationTestComponent
-                                game="Snake"
-                                emotion={notification}
-                                emotionScore={emotions.sad}
-                            />
-                        )}
-                        {notification === 'angry' && (
-                            <NotificationTestComponent
-                                game="Snake"
-                                emotion={notification}
-                                emotionScore={emotions.angry}
-                            />
-                        )}
-                    </div>
-                )}
+                { showNotification && <div className="mt-4 p-4 border rounded">
+                    <h2>Generated Notification:</h2>
+                    <p>{notificationText}</p>
+                </div> }
             </div>
         </div>
     );
