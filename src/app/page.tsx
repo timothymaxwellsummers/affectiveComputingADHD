@@ -8,7 +8,6 @@ export default function Home() {
       <h1 className="text-2xl font-bold my-4 ml-4">🚧 AffectiveADHD Testing 🚧</h1>
       <Game />
       <DashboardComponent />
-     
       <li>
         <Link href="/dashboard"> Dashboard</Link>
       </li>

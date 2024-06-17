@@ -3,8 +3,9 @@
   
     const DashboardPage: React.FC = () => {
         return (
+
             <div className="flex flex-col md:flex-row p-12 space-y-8 md:space-y-0 md:space-x-8">
-                <div className="flex-1 space-y-4">
+                <div className="flex-1 space-y-4 rounded-xl shadow-xl">
                     <h1 className="text-2xl font-bold">Symptomverlauf über den letzten Monat</h1>
                     <div className="pt-4">
                         <SymptomLineChart />
@@ -15,14 +16,15 @@
                         Herzlichen Glückwunsch, Ihr Kind macht beeindruckende Fortschritte.
                     </p>
                 </div>
-                <div className="flex-1 flex flex-col space-y-6">
+                
+                <div className="flex-1 flex flex-col space-y-6 rounded-xl shadow-xl">
                     <h1 className="text-2xl font-bold">Heute</h1>
                     <div>
                         <h1 className="text-xl font-semibold">Hyperaktivitätsscore:</h1>
                         <p className="text-gray-700">20/100</p>
                     </div>
                     <div>
-                        <h1     >Unaufmerksamkeit:</h1>
+                        <h1>Unaufmerksamkeit:</h1>
                         <p className="text-gray-700">50/100</p>
                     </div>
                     <div>
