@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import ReactSpeedometer, { CustomSegmentLabel, CustomSegmentLabelPosition } from 'react-d3-speedometer';
 
 const EnergyBarometer: React.FC = () => {
-  const [energyLevel, setEnergyLevel] = useState<number | null>(null); // Energy Level initialisiert
+  const [energyLevel, setEnergyLevel] = useState<number | null>(null);
   const [energyLevels, setEnergyLevels] = useState<number[]>([]);
 
   const handleBarometerClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -11,12 +11,13 @@ const EnergyBarometer: React.FC = () => {
 
     const clickX = event.clientX - boundingRect.left;
     const barometerWidth = boundingRect.width;
-    const clickPercent = clickX / barometerWidth;
+    const clickPercent = (clickX / barometerWidth) * 100;
 
-    // Berechne energyLevel basierend auf clickPercent
-    const newEnergyLevel = Math.round(clickPercent * 100);
-    setEnergyLevel(newEnergyLevel);
-    setEnergyLevels([...energyLevels, newEnergyLevel]); // Fügt Energy-Level in Array ein
+    const newEnergyLevel = Math.round(clickPercent);
+    const clampedEnergyLevel = Math.max(0, Math.min(newEnergyLevel, 100));
+
+    setEnergyLevel(clampedEnergyLevel);
+    setEnergyLevels([...energyLevels, clampedEnergyLevel]);
   };
 
   const calculateAverage = (): number => {
@@ -25,57 +26,53 @@ const EnergyBarometer: React.FC = () => {
     return sum / energyLevels.length;
   };
 
-  const customSegmentLabels: CustomSegmentLabel[] = [
-    { text: "Empty", position: CustomSegmentLabelPosition.Outside, color: "#666" },
-    { text: "Low", position: CustomSegmentLabelPosition.Outside, color: "#666" },
-    { text: "Moderate", position: CustomSegmentLabelPosition.Outside, color: "#666" },
-    { text: "Medium", position: CustomSegmentLabelPosition.Outside, color: "#666" },
-    { text: "High", position: CustomSegmentLabelPosition.Outside, color: "#666" },
-    { text: "", position: CustomSegmentLabelPosition.Outside, color: "#666" },
-    { text: "", position: CustomSegmentLabelPosition.Outside, color: "#666" },
-  ];
+  const generateSegmentColors = (): string[] => {
+    const colors: string[] = [];
+    for (let i = 0; i <= 100; i++) {
+      const color = `rgb(${255 - (i * 2.55)}, 255, ${255 - (i * 2.55)})`;
+      colors.push(color);
+    }
+    return colors;
+  };
+
+  const customSegmentLabels: CustomSegmentLabel[] = Array.from({ length: 100 }, (_, index) => {
+    if (index === 0) {
+      return { text: "Low", position: CustomSegmentLabelPosition.Outside, color: "#666" };
+    } else if (index === 50) {
+      return { text: "Medium", position: CustomSegmentLabelPosition.Outside, color: "#666" };
+    } else if (index === 99) {
+      return { text: "High", position: CustomSegmentLabelPosition.Outside, color: "#666" };
+    } else {
+      return { text: "", position: undefined, color: "transparent" };
+    }
+  });
 
   const barometerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
-      <div style={{ position: 'relative', display: 'inline-block' }}>
-        <div ref={barometerRef} style={{ position: 'relative' }} onClick={handleBarometerClick}>
-          {!energyLevel && (
-            <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, transform: 'translateY(10px)' }}>
-              <span>Please select your energy level</span>
-            </div>
-          )}
-          <ReactSpeedometer
-            value={energyLevel || 0} // Anfangswert 0 -> bis Wert ausgewählt wird
-            minValue={0}
-            maxValue={100}
-            segments={7}
-            needleColor="red"
-            segmentColors={[
-              "#e5ede1",
-              "#dcebd6",
-              "#b9d8ae",
-              "#95c486",
-              "#70b060",
-              "#489c38",
-              "#008800",
-            ]}
-            textColor="black"
-            customSegmentLabels={customSegmentLabels}
-          />
-        </div>
+      <div ref={barometerRef} style={{ position: 'relative', display: 'inline-block' }} onClick={handleBarometerClick}>
+        <ReactSpeedometer
+          value={energyLevel !== null ? energyLevel : 0}
+          minValue={0}
+          maxValue={100}
+          segments={100}
+          needleColor="red"
+          segmentColors={generateSegmentColors()}
+          textColor="black"
+          customSegmentLabels={customSegmentLabels}
+        />
+        {/* Overlay-Div, um Klicks auf das Barometer zu ermöglichen */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}></div>
       </div>
 
-      <div style={{ marginTop: '10px', fontSize: '1.2em' }}>
-        {energyLevel !== null && <span>Energy Level: {energyLevel}</span>}
+      <div style={{ marginBottom: '0px', fontSize: '1.2em' }}>
+        <span>Energy Level: {energyLevel !== null ? energyLevel : 'Please select your Energy Level by clicking on the barometer'}</span>
       </div>
-
-      <div style={{ marginTop: '5px', fontSize: '1.2em' }}>
-        {energyLevel !== null && <span>Average Energy Level: {calculateAverage().toFixed(2)}</span>}
+      <div style={{ marginBottom: '5px', fontSize: '1.2em' }}>
+        <span>Average Energy Level: {calculateAverage().toFixed(2)}</span>
       </div>
-
     </div>
   );
 };
