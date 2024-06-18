@@ -4,6 +4,7 @@ import EmotionDetection from './EmotionDetection';
 import FaceDetection from './FaceDetection';
 import EmotionBar from './EmotionBar';
 import SymptomLineChart from './Linechart';
+import EnergyBarometer from './EnergyBarometer';
 
 const Dashboard: React.FC = () => {
   const [emotions, setEmotions] = useState({
@@ -82,9 +83,15 @@ const Dashboard: React.FC = () => {
           <EmotionBar label="Disgusted" value={emotions.disgusted} emoji="🤢" />
           <EmotionBar label="Surprised" value={emotions.surprised} emoji="😳" />
           <EmotionBar label="Neutral" value={emotions.neutral} emoji="😐" />
+          </div>
+
+        <SymptomLineChart />
+        
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold">Energy Level</h2>
+          <EnergyBarometer />
         </div>
       </div>
-      <SymptomLineChart />
     </div>
   );
 };
