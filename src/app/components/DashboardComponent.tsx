@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import EmotionDetection from "./EmotionDetection";
 import FaceDetection from "./FaceDetection";
 import EmotionBar from "./EmotionBar";
-import NotificationHandler from "./NotificationHandler";
 import { eventType } from "../types/types";
 
 interface DashboardProps {
@@ -74,6 +73,26 @@ const Dashboard: React.FC<DashboardProps> = ({
       setStates((prev) => prev.filter((s) => s !== state));
     };
 
+    const handleAttentiveState = (
+      emotion: number,
+      event: eventType,
+      timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>
+    ) => {
+      if (emotion < 0.5) {
+        if (!states.includes(event)) {
+          addState(event);
+        }
+
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
+          removeState(event);
+        }, 8000);
+      }
+    }
+
     const handleState = (
       emotion: number,
       event: eventType,
@@ -97,7 +116,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     handleState(emotions.happy, eventType.happy, happyTimeoutRef);
     handleState(emotions.sad, eventType.sad, sadTimeoutRef);
     handleState(emotions.angry, eventType.angry, angryTimeoutRef);
-    handleState(
+    handleAttentiveState(
       attentivenessScore,
       eventType.notConcentrating,
       attentiveTimeoutRef
@@ -112,75 +131,103 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   return (
     <>
-      {devMode ? (
+      <div
+        style={{
+          height: devMode ? "auto" : 0,
+          overflow: devMode ? "visible" : "hidden",
+        }}
+      >
         <div className="flex h-screen">
           {/* Left side for EmotionDetection and FaceDetection */}
-          <div className="w-1/2 p-4 flex flex-col space-y-4">
+          <div
+            className={`w-1/2 p-4 flex flex-col space-y-4 ${
+              !devMode && "opacity-0 h-0"
+            }`}
+          >
             <h1 className="text-2xl font-bold">Tracking</h1>
-            <FaceDetection
-              onGazeUpdate={setLookingAtScreen}
-              devMode={devMode}
-            />
-            <EmotionDetection onEmotionUpdate={setEmotions} devMode={devMode} />
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "360px",
+                opacity: devMode ? 1 : 0,
+                height: devMode ? "280px" : 0,
+              }}
+            >
+              <FaceDetection
+                onGazeUpdate={setLookingAtScreen}
+                devMode={devMode}
+              />
+              <EmotionDetection
+                onEmotionUpdate={setEmotions}
+                devMode={devMode}
+              />
+            </div>
           </div>
 
           {/* Right side for displaying variables */}
-          <div className="w-1/2 p-4 bg-gray-100 overflow-y-auto">
-            <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold">Eye Tracking</h2>
+          {devMode && (
+            <div className="w-1/2 p-4 bg-gray-100 overflow-y-auto">
+              <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
               <div className="mb-6">
-                <p className="text-lg flex items-center">
-                  <span
-                    className={`w-3 h-3 rounded-full mr-2 ${
-                      lookingAtScreen ? "bg-green-500" : "bg-red-500"
-                    }`}
-                  ></span>
-                  {lookingAtScreen
-                    ? "Looking at Screen"
-                    : "Not Looking at Screen"}
-                </p>
+                <h2 className="text-xl font-semibold">Eye Tracking</h2>
+                <div className="mb-6">
+                  <p className="text-lg flex items-center">
+                    <span
+                      className={`w-3 h-3 rounded-full mr-2 ${
+                        lookingAtScreen ? "bg-green-500" : "bg-red-500"
+                      }`}
+                    ></span>
+                    {lookingAtScreen
+                      ? "Looking at Screen"
+                      : "Not Looking at Screen"}
+                  </p>
+                </div>
+                <h2 className="text-xl font-semibold">Attentiveness Score</h2>
+                <p className="text-lg">{attentivenessScore.toFixed(2)}</p>
               </div>
-              <h2 className="text-xl font-semibold">Attentiveness Score</h2>
-              <p className="text-lg">{attentivenessScore.toFixed(2)}</p>
+              <div>
+                <h2 className="text-xl font-semibold">Emotion Tracking</h2>
+                <EmotionBar label="Happy" value={emotions.happy} emoji="😁" />
+                <EmotionBar label="Sad" value={emotions.sad} emoji="😔" />
+                <EmotionBar label="Angry" value={emotions.angry} emoji="😡" />
+                <EmotionBar
+                  label="Fearful"
+                  value={emotions.fearful}
+                  emoji="😨"
+                />
+                <EmotionBar
+                  label="Disgusted"
+                  value={emotions.disgusted}
+                  emoji="🤢"
+                />
+                <EmotionBar
+                  label="Surprised"
+                  value={emotions.surprised}
+                  emoji="😳"
+                />
+                <EmotionBar
+                  label="Neutral"
+                  value={emotions.neutral}
+                  emoji="😐"
+                />
+              </div>
+              <div className="mt-4">
+                <h2 className="text-xl font-semibold">Current States</h2>
+                {states.length === 0 && (
+                  <p className="text-lg">No active states</p>
+                )}
+                {states.map((state, index) => (
+                  <p key={index} className="text-lg">
+                    {eventType[state]}
+                  </p>
+                ))}
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-semibold">Emotion Tracking</h2>
-              <EmotionBar label="Happy" value={emotions.happy} emoji="😁" />
-              <EmotionBar label="Sad" value={emotions.sad} emoji="😔" />
-              <EmotionBar label="Angry" value={emotions.angry} emoji="😡" />
-              <EmotionBar label="Fearful" value={emotions.fearful} emoji="😨" />
-              <EmotionBar
-                label="Disgusted"
-                value={emotions.disgusted}
-                emoji="🤢"
-              />
-              <EmotionBar
-                label="Surprised"
-                value={emotions.surprised}
-                emoji="😳"
-              />
-              <EmotionBar label="Neutral" value={emotions.neutral} emoji="😐" />
-            </div>
-            <div className="mt-4">
-              <h2 className="text-xl font-semibold">Current States</h2>
-              {states.length === 0 && (
-                <p className="text-lg">No active states</p>
-              )}
-              {states.map((state, index) => (
-                <p key={index} className="text-lg">
-                  {eventType[state]}
-                </p>
-              ))}
-            </div>
-          </div>
+          )}
         </div>
-      ) : (
-        <>
-          <FaceDetection onGazeUpdate={setLookingAtScreen} devMode={devMode} />
-          <EmotionDetection onEmotionUpdate={setEmotions} devMode={devMode} />
-        </>
-      )}
+      </div>
     </>
   );
 };
