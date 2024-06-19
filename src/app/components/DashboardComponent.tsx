@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Right side for displaying variables */}
-      <div className="w-1/2 p-4 bg-gray-100 overflow-y-auto">
+      <div className="w-1/2 p-4 overflow-y-auto">
         <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
         <div className="mb-6">
           <h2 className="text-xl font-semibold">Eye Tracking</h2>

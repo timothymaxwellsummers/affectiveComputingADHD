@@ -3,10 +3,10 @@
   
     const DashboardPage: React.FC = () => {
         return (
-        <div className='bg-gradient-to-r from-[rgba(173,216,230,0.5)] to-[rgba(0,0,255,0.5)]'>
+        <div className='bg-gradient-to-r from-[rgba(173,216,230,0.5)] to-[rgba(255,255,255,0.5)]'>
             <div className="flex flex-col md:flex-row p-12 space-y-8 md:space-y-0 md:space-x-8 ">
                 <div className="flex-1 space-y-4 rounded-xl shadow-xl bg-[rgb(255,255,255)]">
-                    <div className="p-4">
+                    <div className="p-6">
                     <h1 className="text-2xl font-bold">Symptomverlauf über den letzten Monat</h1>
                     <div className="pt-4">
                         <SymptomLineChart />
@@ -20,7 +20,7 @@
                 </div>
                 
                 <div className="flex-1 flex flex-col space-y-6 rounded-xl shadow-xl bg-[rgb(255,255,255)]">
-                <div className="flex-col space-y-6 p-4 ">
+                <div className="flex-col space-y-6 p-6 ">
                     <h1 className="text-2xl font-bold">Heute</h1>
                     <div>
                         <h1 className="text-xl font-semibold">Hyperaktivitätsscore:</h1>
