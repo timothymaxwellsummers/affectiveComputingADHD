@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState } from "react";
 import DashboardComponent from "./components/DashboardComponent";
 import Game from "./components/Game";
@@ -13,18 +13,24 @@ export default function Home() {
   };
 
   return (
-    <main className="p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">🚧 AffectiveADHD Testing 🚧</h1>
-        
+    <main className="">
+      <div className="bg-gradient-to-r from-[rgba(173,216,230,0.5)] to-[rgba(0,0,255,0.5)]  p-4 ">
+        <h1 className="text-2xl font-bold my-4 ml-4 text-[rgb(0,14,128)] ">
+          Affective ADHD
+        </h1>
+
+        {states.map((state, index) => (
+          <p key={index} className="text-lg">
+            {eventType[state]}
+          </p>
+        ))}
+        <Game />
+        <DashboardComponent
+          devMode={isToggled}
+          states={states}
+          setStates={setStates}
+        />
       </div>
-      {states.map((state, index) => (
-              <p key={index} className="text-lg">
-                {eventType[state]}
-              </p>
-            ))}
-      <Game />
-      <DashboardComponent devMode={isToggled} states={states} setStates={setStates}/>
     </main>
   );
 }
