@@ -39,10 +39,14 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Update attentiveness score every 3 seconds
-      setAttentivenessScore(
-        lookingAtScreenCount.current / intervalCount1.current
-      );
+      // Ensure intervalCount1 is not zero to avoid division by zero
+      if (intervalCount1.current > 0) {
+        setAttentivenessScore(
+          lookingAtScreenCount.current / intervalCount1.current
+        );
+      } else {
+        setAttentivenessScore(0); // Set to 0 or some default value if intervalCount1 is zero
+      }
 
       // Reset counters for the next interval
       lookingAtScreenCount.current = 0;
@@ -91,7 +95,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           removeState(event);
         }, 8000);
       }
-    }
+    };
 
     const handleState = (
       emotion: number,
