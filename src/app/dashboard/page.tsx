@@ -3,7 +3,10 @@ import SymptomLineChart from './SymptomLineChart';
 
 const DashboardPage: React.FC = () => {
     return (
-    <div className='bg-gradient-to-r from-[rgba(173,216,230,0.5)] to-[rgba(0,0,255,0.5)]'>
+    <div className=''>
+        <h1 className="text-2xl font-bold mt-2 ml-4 text-[rgb(0,14,128)] ">
+          Parent Dashboard
+        </h1>
         <div className="flex flex-col md:flex-row p-12 space-y-8 md:space-y-0 md:space-x-8 ">
             <div className="flex-1 space-y-4 rounded-xl shadow-xl bg-[rgb(255,255,255)]">
                 <div className="p-6">

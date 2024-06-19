@@ -34,7 +34,7 @@ const Game: React.FC = () => {
                         src={selectedGame}
                         title="ADHD Game"
                         className="bg-[rgb(255,255,255)] rounded-xl shadow-xl"
-                        style={{ width: '1000px', height: '600px' }}
+                        style={{ width: '900px', height: '540px' }}
                     ></iframe>
                     </div>
                 </div>
