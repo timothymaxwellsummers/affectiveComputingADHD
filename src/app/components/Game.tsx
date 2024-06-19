@@ -2,6 +2,7 @@
 import React, { useState, useMemo } from "react";
 import { eventType } from "../types/types";
 import Pill from "./Pill";
+import NotificationHandler from "./NotificationHandler";
 
 interface GameProps {
   states: eventType[];
@@ -11,6 +12,8 @@ const Game: React.FC<GameProps> = ({ states }) => {
   const [selectedGame, setSelectedGame] = useState(
     "https://cdn.htmlgames.com/NinjaBreakout/"
   );
+
+  const [selectedGameString, setSelectedGameString] = useState("Ninja Breakout");
 
   const games = useMemo(
     () => [
@@ -30,14 +33,11 @@ const Game: React.FC<GameProps> = ({ states }) => {
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <h1 className="text-2xl font-bold text-[rgb(0,0,128)] mb-4">
-        Hey there, choose the game you want to play
-      </h1>
       <div className="flex space-x-4 mb-4 p-4 bg-[rgb(255,255,255)] rounded-xl shadow-xl">
         {games.map((game) => (
           <button
             key={game.name}
-            onClick={() => setSelectedGame(game.url)}
+            onClick={() => {setSelectedGame(game.url); setSelectedGameString(game.name)}}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-300"
           >
             {game.name}
@@ -51,6 +51,7 @@ const Game: React.FC<GameProps> = ({ states }) => {
           </p>
         ))}
       </div>
+      <NotificationHandler states={states} game={selectedGame} />
       {selectedGame && (
         <div className="w-full flex justify-center">
           <div>

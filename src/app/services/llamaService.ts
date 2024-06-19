@@ -19,9 +19,9 @@ export class LlamaService {
         const prompt = ChatPromptTemplate.fromMessages([
             [
                 "system",
-                `You are generating a notification for a child with ADHD playing a video game. The notifications should only be one sentence long and should be playful and can include emojis. They are intended to increase the child's motivation and engagement with the game. Use the information provided to tailor the message appropriately.`,
+                `You are generating a notification for a child with ADHD playing a video game. The notifications should only be one short sentence long (maximum of 10 words) and should be playful and can include emojis. They are intended to increase the child's motivation and engagement with the game. Use the information provided to tailor the message appropriately.`,
             ],
-            ["human", "Game played: {game}, Reason for notification: player is {event}"],
+            ["human", "Current Game played: {game}, State of the child: {event}"],
         ]);
 
         const chain = prompt.pipe(this.model);
@@ -41,18 +41,18 @@ export class LlamaService {
         });
     }
 
-    async generateResponse(adhdEvent: AdhdEvent): Promise<string> {
+    async generateResponse(event: string, game: string, sessionId: string): Promise<string> {
         const config = {
             configurable: {
-                sessionId: adhdEvent.sessionId,
+                sessionId: sessionId,
             },
         };
 
         try {
             const stream = await this.withMessageHistory.stream(
                 {
-                    game: adhdEvent.game,
-                    event: adhdEvent.eventType.toString(),
+                    game: game,
+                    event: event.toString(),
                 },
                 config
             );
@@ -62,6 +62,9 @@ export class LlamaService {
                 response += chunk.content;
             }
 
+            // Truncate response to one sentence with a maximum of 20 words
+            response = this.truncateToOneSentence(response);
+
             console.log('Streaming response finished.');
             console.log('Response:', response);
             return response;
@@ -69,6 +72,17 @@ export class LlamaService {
             console.error('Error generating response:', error);
             throw new Error('Failed to generate response');
         }
+    }
+    private truncateToOneSentence(response: string): string {
+        const sentences = response.match(/[^.!?]*[.!?]/g) || [response];
+        let truncatedResponse = sentences[0].trim();
+
+        const words = truncatedResponse.split(' ');
+        if (words.length > 20) {
+            truncatedResponse = words.slice(0, 15).join(' ') + '...';
+        }
+
+        return truncatedResponse;
     }
 }
 
