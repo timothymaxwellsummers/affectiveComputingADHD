@@ -18,13 +18,7 @@ export default function Home() {
         <h1 className="text-2xl font-bold mt-2 mb-4 ml-4 text-[rgb(0,14,128)] ">
           Affective ADHD
         </h1>
-
-        {states.map((state, index) => (
-          <p key={index} className="text-lg">
-            {eventType[state]}
-          </p>
-        ))}
-        <Game />
+        <Game states={states}/>
         <DashboardComponent
           devMode={isToggled}
           states={states}
