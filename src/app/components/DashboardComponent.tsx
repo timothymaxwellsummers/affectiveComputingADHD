@@ -40,18 +40,23 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Update attentiveness score every 3 seconds
-      setAttentivenessScore(
-        lookingAtScreenCount.current / intervalCount1.current
-      );
-
+      // Ensure intervalCount1 is not zero to avoid division by zero
+      if (intervalCount1.current > 0) {
+        setAttentivenessScore(
+          lookingAtScreenCount.current / intervalCount1.current
+        );
+      } else {
+        setAttentivenessScore(0); // Set to 0 or some default value if intervalCount1 is zero
+      }
+  
       // Reset counters for the next interval
       lookingAtScreenCount.current = 0;
       intervalCount1.current = 0;
     }, 3000);
-
+  
     return () => clearInterval(interval);
   }, []);
+  
 
   useEffect(() => {
     // Track if user is looking at the screen within the interval
@@ -61,9 +66,10 @@ const Dashboard: React.FC<DashboardProps> = ({
         lookingAtScreenCount.current += 1;
       }
     }, 1000);
-
+  
     return () => clearInterval(interval);
   }, [lookingAtScreen]);
+  
 
   useEffect(() => {
     const addState = (state: eventType) => {
@@ -73,6 +79,26 @@ const Dashboard: React.FC<DashboardProps> = ({
     const removeState = (state: eventType) => {
       setStates((prev) => prev.filter((s) => s !== state));
     };
+
+    const handleAttentiveState = (
+      emotion: number,
+      event: eventType,
+      timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>
+    ) => {
+      if (emotion < 0.5) {
+        if (!states.includes(event)) {
+          addState(event);
+        }
+
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
+          removeState(event);
+        }, 8000);
+      }
+    }
 
     const handleState = (
       emotion: number,
@@ -97,7 +123,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     handleState(emotions.happy, eventType.happy, happyTimeoutRef);
     handleState(emotions.sad, eventType.sad, sadTimeoutRef);
     handleState(emotions.angry, eventType.angry, angryTimeoutRef);
-    handleState(
+    handleAttentiveState(
       attentivenessScore,
       eventType.notConcentrating,
       attentiveTimeoutRef
