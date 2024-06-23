@@ -15,7 +15,8 @@
     "react-dom": "^18",
     "react-router-dom": "^6.23.1",
     "recharts": "^2.12.7",
-    "spellchecker": "^3.7.1"
+    "spellchecker": "^3.7.1",
+    "styled-components": "^6.1.11"
   },
   "devDependencies": {
     "@types/node": "^20",
