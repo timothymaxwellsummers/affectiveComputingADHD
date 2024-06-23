@@ -20,7 +20,7 @@ const Game: React.FC = () => {
                     <button
                         key={game.name}
                         onClick={() => setSelectedGame(game.url)}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-300"
+                        className="px-4 py-2 bg-[rgba(0,14,128,0.9)] text-white rounded hover:bg-[rgba(0,14,128,0.75)] transition duration-300"
                     >
                         {game.name}
                     </button>
