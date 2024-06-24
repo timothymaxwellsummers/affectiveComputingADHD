@@ -1,0 +1,6 @@
+{
+    "match": "Great job! You found a match!",
+    "noMatch": "Try again! No match this time.",
+    "reset": "Game has been reset. Good luck!",
+    "wrongGuess": "Oops! That was a wrong guess."
+  }
