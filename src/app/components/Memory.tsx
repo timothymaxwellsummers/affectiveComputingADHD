@@ -28,6 +28,18 @@ const MemoryGame: React.FC = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [score, setScore] = useState<number>(0);
   const [wrongGuesses, setWrongGuesses] = useState<number>(0);
+  const [feedback, setFeedback] = useState<string>('');
+  const [feedbackMessages, setFeedbackMessages] = useState<any>({});
+
+
+
+  useEffect(() => {
+    // Load feedback messages from JSON file
+    fetch('/FeedbackTexts.json')
+      .then(response => response.json())
+      .then(data => setFeedbackMessages(data));
+  }, []);
+
 
   useEffect(() => {
     if (flippedCards.length === 2) {
@@ -43,7 +55,10 @@ const MemoryGame: React.FC = () => {
         );
         setCards(newCards);
         setScore(score + 1);
+        setFeedback(feedbackMessages.match);
+
       } else {
+        setFeedback(feedbackMessages.noMatch);
         setWrongGuesses(wrongGuesses + 1);
         setTimeout(() => {
           const newCards = cards.map((card, index) =>
@@ -56,7 +71,7 @@ const MemoryGame: React.FC = () => {
       }
       setFlippedCards([]);
     }
-  }, [flippedCards, cards, score, wrongGuesses]);
+  }, [flippedCards, cards, score, wrongGuesses,feedbackMessages]);
 
   const handleCardClick = (index: number) => {
     if (flippedCards.length < 2 && !cards[index].isFlipped && !cards[index].isMatched) {
@@ -73,28 +88,34 @@ const MemoryGame: React.FC = () => {
     setFlippedCards([]);
     setScore(0);
     setWrongGuesses(0);
+    setFeedback(feedbackMessages.reset);
   };
 
 
   return (
-    <div className="p-12">
-      <h1 className="text-2xl font-bold mb-4">Memory Game</h1>
-      <h2 className="text-xl mb-4">Score: {score}</h2>
-      <h2 className="text-xl mb-4">Wrong Guesses: {wrongGuesses}</h2>
+    <div className="p-24">
+      <h1 className="text-2xl text-[rgb(0,14,128)] font-bold mb-4">Memory Game</h1>
+      <div className="bg-white rounded-xl shadow-xl p-4  text-[rgb(0,14,128)] mb-5 max-w-md text-center border text-lg">
+          {feedback}
+        </div>
+      <h2 className="text-xl text-[rgb(0,14,128)] mb-4">Score: {score}</h2>
+      <h2 className="text-xl text-[rgb(0,14,128)] mb-4">Wrong Guesses: {wrongGuesses}</h2>
       <button 
         onClick={resetGame} 
         className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
       >
         Reset Game
       </button>
+
+
       <div className="grid grid-cols-4 gap-4">
         {cards.map((card, index) => (
           <div
             key={card.id}
             onClick={() => handleCardClick(index)}
-            className="w-24 h-24 flex items-center justify-center cursor-pointer rounded-l shadow-xl"
+            className="w-24 h-24 flex  cursor-pointer rounded-l shadow-xl"
             style={{
-              backgroundColor: card.isFlipped || card.isMatched ? 'white' : 'grey',
+              backgroundColor: card.isFlipped || card.isMatched ? 'white' : 'rgba(0,14,128,0.6)',
             }}
           >
             {card.isFlipped || card.isMatched ? (

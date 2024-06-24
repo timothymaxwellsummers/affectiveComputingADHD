@@ -11,7 +11,7 @@ const Game: React.FC = () => {
         { name: 'Upsidedown', url: 'https://cdn.htmlgames.com/UpsideDown/' },
         { name: 'Coloring for Kids', url: 'https://cdn.htmlgames.com/ColoringForKids/' }
     ], []);
-
+    
     return (
         <div className="flex flex-col items-center justify-center  ">
             <h1 className="text-2xl font-bold text-[rgb(0,0,128)] mb-4">Hey there, choose the game you want to play</h1>
