@@ -32,9 +32,7 @@ const MemoryGame: React.FC = () => {
   const [feedbackMessages, setFeedbackMessages] = useState<any>({});
 
 
-
   useEffect(() => {
-    // Load feedback messages from JSON file
     fetch('/FeedbackTexts.json')
       .then(response => response.json())
       .then(data => setFeedbackMessages(data));
@@ -56,6 +54,7 @@ const MemoryGame: React.FC = () => {
         setCards(newCards);
         setScore(score + 1);
         setFeedback(feedbackMessages.match);
+        
 
       } else {
         setFeedback(feedbackMessages.noMatch);
@@ -69,9 +68,16 @@ const MemoryGame: React.FC = () => {
           setCards(newCards);
         }, 1000);
       }
+  
       setFlippedCards([]);
     }
   }, [flippedCards, cards, score, wrongGuesses,feedbackMessages]);
+
+  useEffect(() => {
+    if (score === initialCards.length / 2) {
+      setFeedback(feedbackMessages.won);
+    }
+  }, [score, feedbackMessages]);
 
   const handleCardClick = (index: number) => {
     if (flippedCards.length < 2 && !cards[index].isFlipped && !cards[index].isMatched) {

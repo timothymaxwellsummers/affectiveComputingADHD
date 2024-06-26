@@ -1,6 +1,7 @@
 {
-    "match": "Great job! You found a match!",
-    "noMatch": "Try again! No match this time.",
-    "reset": "Game has been reset. Good luck!",
-    "wrongGuess": "Oops! That was a wrong guess."
+    "match": "Congrats, you found a right match!",
+    "noMatch": "Do not worry, it is a bit difficult - I am sure you will find a solution next time.",
+    "reset": "Game has been reset. Good luck this time!",
+    "wrongGuess": "I think it is great that you are tring to find the right match! ",
+    "won": "Congrats, all matches found"
   }
