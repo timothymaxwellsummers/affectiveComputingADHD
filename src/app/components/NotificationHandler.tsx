@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import LlamaService from "../services/LlamaService";
+import LlamaService from "../services/llamaService";
 import { eventType } from "../types/types";
 
 const llamaService = new LlamaService("https://ollama.medien.ifi.lmu.de");
@@ -9,20 +9,17 @@ const llamaService = new LlamaService("https://ollama.medien.ifi.lmu.de");
 interface NotificationHandlerProps {
   states: eventType[];
   game: string;
+  sessionId: string;
 }
 
 const NotificationHandler: React.FC<NotificationHandlerProps> = ({
   states,
   game,
+  sessionId,
 }) => {
   const [notification, setNotification] = useState<string>(
     "Sitting upright? Are my feet on the ground?\nI listen and watch carefully."
   );
-  const [sessionId, setSessionId] = useState<string>("");
-
-  useEffect(() => {
-    setSessionId(uuidv4());
-  }, []);
 
   useEffect(() => {
     const generateNotification = async (adhdEvent: string) => {

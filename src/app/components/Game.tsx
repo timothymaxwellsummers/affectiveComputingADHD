@@ -1,8 +1,11 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { eventType } from "../types/types";
 import Pill from "./Pill";
 import NotificationHandler from "./NotificationHandler";
+import LocalStorageHandler from "./LocalStorageHandler";
+import { SessionData } from "../types/types";
 
 interface GameProps {
   states: eventType[];
@@ -14,6 +17,18 @@ const Game: React.FC<GameProps> = ({ states }) => {
   );
 
   const [selectedGameString, setSelectedGameString] = useState("Ninja Breakout");
+
+  const [sessionId, setSessionId] = useState<string>("");
+  const [sessionData, setSessionData] = useState<SessionData | null>(null);
+
+  useEffect(() => {
+    setSessionId(uuidv4());
+  }, []);
+
+  const handleSessionDataUpdate = (newSessionId: string, newSessionData: SessionData) => {
+    setSessionId(newSessionId);
+    setSessionData(newSessionData);
+  };
 
   const games = useMemo(
     () => [
@@ -33,6 +48,7 @@ const Game: React.FC<GameProps> = ({ states }) => {
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
+      <LocalStorageHandler states={states} game={selectedGameString} onSessionDataUpdate={handleSessionDataUpdate} />
       <div className="flex space-x-4 mb-4 p-4 bg-[rgb(255,255,255)] rounded-xl shadow-xl">
         {games.map((game) => (
           <button
@@ -51,7 +67,7 @@ const Game: React.FC<GameProps> = ({ states }) => {
           </p>
         ))}
       </div>
-      <NotificationHandler states={states} game={selectedGame} />
+      <NotificationHandler states={states} game={selectedGame} sessionId={sessionId} />
       {selectedGame && (
         <div className="w-full flex justify-center">
           <div>
