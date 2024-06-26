@@ -15,7 +15,7 @@ export enum eventType {
 export interface TrackedEmotionState {
   time: string;
   gamePlayed: string;
-  emotions: eventType[];
+  emotions: string[];
 }
 
 export interface SessionData {

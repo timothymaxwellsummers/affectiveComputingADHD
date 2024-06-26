@@ -19,7 +19,12 @@ export class LlamaService {
         const prompt = ChatPromptTemplate.fromMessages([
             [
                 "system",
-                `You are generating a notification for a child with ADHD playing a video game. The notifications should only be one short sentence long (maximum of 10 words) and should be playful and can include emojis. They are intended to increase the child's motivation and engagement with the game. Use the information provided to tailor the message appropriately.`,
+                `You are generating a notification for a child with ADHD playing
+                 a video game. The notifications should only be one short 
+                 sentence long (maximum of 10 words) and should be playful
+                  and can include emojis. They are intended to increase the 
+                  child's motivation and engagement with the game. Use the 
+                  information provided to tailor the message appropriately.`,
             ],
             ["human", "Current Game played: {game}, State of the child: {event}"],
         ]);
@@ -52,7 +57,7 @@ export class LlamaService {
             const stream = await this.withMessageHistory.stream(
                 {
                     game: game,
-                    event: event.toString(),
+                    event: eventType[Number(event)],
                 },
                 config
             );

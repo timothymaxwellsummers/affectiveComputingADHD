@@ -37,7 +37,7 @@ const LocalStorageHandler: React.FC<LocalStorageHandlerProps> = ({
       const newTrackedEmotionState: TrackedEmotionState = {
         time: new Date().toISOString(),
         gamePlayed: game,
-        emotions: [...states],
+        emotions: states.map((state) => eventType[state]),
       };
 
       const updatedSessionData = {
