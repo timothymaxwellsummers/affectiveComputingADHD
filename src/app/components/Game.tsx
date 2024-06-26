@@ -16,7 +16,8 @@ const Game: React.FC<GameProps> = ({ states }) => {
     "https://cdn.htmlgames.com/NinjaBreakout/"
   );
 
-  const [selectedGameString, setSelectedGameString] = useState("Ninja Breakout");
+  const [selectedGameString, setSelectedGameString] =
+    useState("Ninja Breakout");
 
   const [sessionId, setSessionId] = useState<string>("");
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
@@ -25,11 +26,15 @@ const Game: React.FC<GameProps> = ({ states }) => {
     setSessionId(uuidv4());
   }, []);
 
-  const handleSessionDataUpdate = (newSessionId: string, newSessionData: SessionData) => {
+  const handleSessionDataUpdate = (
+    newSessionId: string,
+    newSessionData: SessionData
+  ) => {
     setSessionId(newSessionId);
     setSessionData(newSessionData);
   };
 
+  //ToDo Integrate Memory Game
   const games = useMemo(
     () => [
       { name: "Neon Nibblet", url: "https://cdn.htmlgames.com/NeonNibblet/" },
@@ -48,12 +53,19 @@ const Game: React.FC<GameProps> = ({ states }) => {
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <LocalStorageHandler states={states} game={selectedGameString} onSessionDataUpdate={handleSessionDataUpdate} />
+      <LocalStorageHandler
+        states={states}
+        game={selectedGameString}
+        onSessionDataUpdate={handleSessionDataUpdate}
+      />
       <div className="flex space-x-4 mb-4 p-4 bg-[rgb(255,255,255)] rounded-xl shadow-xl">
         {games.map((game) => (
           <button
             key={game.name}
-            onClick={() => {setSelectedGame(game.url); setSelectedGameString(game.name)}}
+            onClick={() => {
+              setSelectedGame(game.url);
+              setSelectedGameString(game.name);
+            }}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-300"
           >
             {game.name}
@@ -67,7 +79,11 @@ const Game: React.FC<GameProps> = ({ states }) => {
           </p>
         ))}
       </div>
-      <NotificationHandler states={states} game={selectedGame} sessionId={sessionId} />
+      <NotificationHandler
+        states={states}
+        game={selectedGame}
+        sessionId={sessionId}
+      />
       {selectedGame && (
         <div className="w-full flex justify-center">
           <div>
