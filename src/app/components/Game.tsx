@@ -1,42 +1,87 @@
-'use client';
-import React, { useState, useMemo } from 'react';
+"use client";
+import React, { useState, useMemo, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { eventType } from "../types/types";
+import Pill from "./Pill";
+import NotificationHandler from "./NotificationHandler";
+import LocalStorageHandler from "./LocalStorageHandler";
+import { SessionData } from "../types/types";
 
-const Game: React.FC = () => {
-    const [selectedGame, setSelectedGame] = useState('https://cdn.htmlgames.com/NinjaBreakout/');
+interface GameProps {
+  states: eventType[];
+}
 
-    const games = useMemo(() => [
-        { name: 'Neon Nibblet', url: 'https://cdn.htmlgames.com/NeonNibblet/' },
-        { name: 'Ninja Breakout', url: 'https://cdn.htmlgames.com/NinjaBreakout/' },
-        { name: 'Upsidedown', url: 'https://cdn.htmlgames.com/UpsideDown/' },
-        { name: 'Coloring for Kids', url: 'https://cdn.htmlgames.com/ColoringForKids/' }
-    ], []);
+const Game: React.FC<GameProps> = ({ states }) => {
+  const [selectedGame, setSelectedGame] = useState(
+    "https://cdn.htmlgames.com/NinjaBreakout/"
+  );
 
-    return (
-        <div className="flex flex-col items-center justify-center bg-gray-100 min-h-screen">
-            <h1 className="text-2xl font-bold mb-4">Choose a Game</h1>
-            <div className="flex space-x-4 mb-8">
-                {games.map((game) => (
-                    <button
-                        key={game.name}
-                        onClick={() => setSelectedGame(game.url)}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-300"
-                    >
-                        {game.name}
-                    </button>
-                ))}
-            </div>
-            {selectedGame && (
-                <div className="w-full flex justify-center">
-                    <iframe
-                        src={selectedGame}
-                        title="ADHD Game"
-                        className="border-2 border-gray-300"
-                        style={{ width: '800px', height: '600px' }}
-                    ></iframe>
-                </div>
-            )}
+  const [selectedGameString, setSelectedGameString] = useState("Ninja Breakout");
+
+  const [sessionId, setSessionId] = useState<string>("");
+  const [sessionData, setSessionData] = useState<SessionData | null>(null);
+
+  useEffect(() => {
+    setSessionId(uuidv4());
+  }, []);
+
+  const handleSessionDataUpdate = (newSessionId: string, newSessionData: SessionData) => {
+    setSessionId(newSessionId);
+    setSessionData(newSessionData);
+  };
+
+  const games = useMemo(
+    () => [
+      { name: "Neon Nibblet", url: "https://cdn.htmlgames.com/NeonNibblet/" },
+      {
+        name: "Ninja Breakout",
+        url: "https://cdn.htmlgames.com/NinjaBreakout/",
+      },
+      { name: "Upsidedown", url: "https://cdn.htmlgames.com/UpsideDown/" },
+      {
+        name: "Coloring for Kids",
+        url: "https://cdn.htmlgames.com/ColoringForKids/",
+      },
+    ],
+    []
+  );
+
+  return (
+    <div className="flex flex-col items-center justify-center h-full">
+      <LocalStorageHandler states={states} game={selectedGameString} onSessionDataUpdate={handleSessionDataUpdate} />
+      <div className="flex space-x-4 mb-4 p-4 bg-[rgb(255,255,255)] rounded-xl shadow-xl">
+        {games.map((game) => (
+          <button
+            key={game.name}
+            onClick={() => {setSelectedGame(game.url); setSelectedGameString(game.name)}}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-300"
+          >
+            {game.name}
+          </button>
+        ))}
+      </div>
+      <div className="flex flex-wrap justify-start items-start w-full max-w-4xl h-14 gap-2">
+        {states.map((state, index) => (
+          <p key={index} className="text-lg">
+            <Pill key={index} event={state} />
+          </p>
+        ))}
+      </div>
+      <NotificationHandler states={states} game={selectedGame} sessionId={sessionId} />
+      {selectedGame && (
+        <div className="w-full flex justify-center">
+          <div>
+            <iframe
+              src={selectedGame}
+              title="ADHD Game"
+              className="bg-[rgb(255,255,255)] rounded-xl shadow-xl"
+              style={{ width: "900px", height: "540px" }}
+            ></iframe>
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default React.memo(Game);

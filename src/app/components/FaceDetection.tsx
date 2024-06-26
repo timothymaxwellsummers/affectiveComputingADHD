@@ -1,12 +1,13 @@
-'use client'
+'use client';
 import React, { useRef, useEffect, useState } from 'react';
 import * as faceapi from 'face-api.js';
 
 interface FaceDetectionProps {
   onGazeUpdate: (lookingAtScreen: boolean) => void;
+  devMode: boolean;
 }
 
-const FaceDetection: React.FC<FaceDetectionProps> = ({ onGazeUpdate }) => {
+const FaceDetection: React.FC<FaceDetectionProps> = ({ onGazeUpdate, devMode }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [initializing, setInitializing] = useState(true);
@@ -58,8 +59,10 @@ const FaceDetection: React.FC<FaceDetectionProps> = ({ onGazeUpdate }) => {
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        faceapi.draw.drawDetections(canvas, resizedDetections);
-        faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+        if (devMode) {
+          faceapi.draw.drawDetections(canvas, resizedDetections);
+          faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+        }
 
         if (resizedDetections.length > 0) {
           const landmarks = resizedDetections[0].landmarks;
@@ -93,11 +96,10 @@ const FaceDetection: React.FC<FaceDetectionProps> = ({ onGazeUpdate }) => {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold">Eye Tracking</h2>
       {initializing ? (
         <p>Loading...</p>
       ) : (
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', opacity: devMode ? 1 : 0, height: devMode ? 'auto' : 0 }}>
           <video
             ref={videoRef}
             autoPlay

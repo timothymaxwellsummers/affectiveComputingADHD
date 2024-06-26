@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useRef, useEffect, useState } from 'react';
 import * as faceapi from 'face-api.js';
 
@@ -14,9 +14,10 @@ interface EmotionData {
 
 interface EmotionDetectionProps {
   onEmotionUpdate: (emotions: EmotionData) => void;
+  devMode: boolean;
 }
 
-const EmotionDetection: React.FC<EmotionDetectionProps> = ({ onEmotionUpdate }) => {
+const EmotionDetection: React.FC<EmotionDetectionProps> = ({ onEmotionUpdate, devMode }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [initializing, setInitializing] = useState(true);
@@ -67,8 +68,10 @@ const EmotionDetection: React.FC<EmotionDetectionProps> = ({ onEmotionUpdate }) 
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        faceapi.draw.drawDetections(canvas, resizedDetections);
-        faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+        if (devMode) {
+          faceapi.draw.drawDetections(canvas, resizedDetections);
+          faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+        }
 
         if (resizedDetections.length > 0) {
           const expressions = resizedDetections[0].expressions;
@@ -89,11 +92,10 @@ const EmotionDetection: React.FC<EmotionDetectionProps> = ({ onEmotionUpdate }) 
 
   return (
     <div>
-      <h2 className="text-xl font-semibold">Emotion Tracking</h2>
       {initializing ? (
-        <p>Loading...</p>
+        <p>Loading Emotion Detection...</p>
       ) : (
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', opacity: devMode ? 1 : 0, height: devMode ? 'auto' : 0 }}>
           <video
             ref={videoRef}
             autoPlay
