@@ -1,15 +1,20 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useState, useRef } from "react";
 import DashboardComponent from "./components/DashboardComponent";
 import Game from "./components/Game";
 import { eventType } from "./types/types";
 import MemoryGame from "./components/Memory";
 import EnergyBarometer from "./components/EnergyBarometer";
+import {
+  initializeGameSessionData,
+  saveGameSessionData,
+} from "./services/localStorageService";
 
 export default function Home() {
   const [isToggled, setIsToggled] = useState(false);
   const [states, setStates] = useState<eventType[]>([]);
   const [showBarometer, setShowBarometer] = useState(true);
+  const sessionInitialized = useRef(false);
 
   const handleToggle = () => {
     setIsToggled(!isToggled);
@@ -18,6 +23,14 @@ export default function Home() {
   const closeModal = () => {
     setShowBarometer(false);
   };
+
+  useEffect(() => {
+    if (!sessionInitialized.current) {
+      const sessionData = initializeGameSessionData();
+      saveGameSessionData(sessionData);
+      sessionInitialized.current = true;
+    }
+  }, []);
 
   return (
     <main className="">
@@ -35,7 +48,7 @@ export default function Home() {
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-4 rounded shadow-lg relative text-center">
               <EnergyBarometer />
-              <button 
+              <button
                 className="mt-4 p-2 bg-purple-800 text-white rounded"
                 onClick={closeModal}
               >

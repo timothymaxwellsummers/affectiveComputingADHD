@@ -49,11 +49,6 @@ const Game: React.FC<GameProps> = ({ states }) => {
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <LocalStorageHandler
-        states={states}
-        game={selectedGame.name}
-        onSessionDataUpdate={handleSessionDataUpdate}
-      />
       <div className="flex space-x-4 mb-4 p-4 bg-[rgb(255,255,255)] rounded-xl shadow-xl">
         {games.map((game) => (
           <button
