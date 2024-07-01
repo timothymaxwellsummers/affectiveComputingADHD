@@ -9,11 +9,13 @@ import {
   initializeGameSessionData,
   saveGameSessionData,
 } from "./services/localStorageService";
+import { GameSessionData } from "./types/types";
 
 export default function Home() {
   const [isToggled, setIsToggled] = useState(false);
   const [states, setStates] = useState<eventType[]>([]);
   const [showBarometer, setShowBarometer] = useState(true);
+  const [sessionData, setSessionData] = useState<GameSessionData>(initializeGameSessionData);
   const sessionInitialized = useRef(false);
 
   const handleToggle = () => {
@@ -26,7 +28,6 @@ export default function Home() {
 
   useEffect(() => {
     if (!sessionInitialized.current) {
-      const sessionData = initializeGameSessionData();
       saveGameSessionData(sessionData);
       sessionInitialized.current = true;
     }
@@ -47,7 +48,7 @@ export default function Home() {
         {showBarometer && (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-4 rounded shadow-lg relative text-center">
-              <EnergyBarometer />
+              <EnergyBarometer sessionData={sessionData} />
               <button
                 className="mt-4 p-2 bg-purple-800 text-white rounded"
                 onClick={closeModal}
