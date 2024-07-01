@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import DashboardComponent from "./components/DashboardComponent";
 import Game from "./components/Game";
 import { eventType } from "./types/types";
