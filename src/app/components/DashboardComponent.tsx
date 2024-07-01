@@ -11,6 +11,7 @@ interface DashboardProps {
   states: eventType[];
   setStates: React.Dispatch<React.SetStateAction<eventType[]>>;
 }
+import EnergyBarometer from './EnergyBarometer';
 
 const Dashboard: React.FC<DashboardProps> = ({
   devMode,
@@ -216,6 +217,13 @@ const Dashboard: React.FC<DashboardProps> = ({
                   value={emotions.neutral}
                   emoji="😐"
                 />
+          </div>
+
+        <SymptomLineChart />
+        
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold">Energy Level</h2>
+          <EnergyBarometer />
               </div>
               <div className="mt-4">
                 <h2 className="text-xl font-semibold">Current States</h2>
