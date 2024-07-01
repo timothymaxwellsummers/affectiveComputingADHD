@@ -24,3 +24,8 @@ export interface SessionData {
   endTime?: string;
   trackedEmotionStates: TrackedEmotionState[];
 }
+
+export interface Game {
+  name: string;
+  url?: string;
+}

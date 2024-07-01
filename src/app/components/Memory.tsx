@@ -28,7 +28,7 @@ const MemoryGame: React.FC = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [score, setScore] = useState<number>(0);
   const [wrongGuesses, setWrongGuesses] = useState<number>(0);
-  const [feedback, setFeedback] = useState<string>('');
+  const [feedback, setFeedback] = useState<string>('Find the first match!');
   const [feedbackMessages, setFeedbackMessages] = useState<any>({});
 
 

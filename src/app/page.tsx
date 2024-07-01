@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import DashboardComponent from "./components/DashboardComponent";
 import Game from "./components/Game";
 import { eventType } from "./types/types";
@@ -8,10 +8,6 @@ import MemoryGame from "./components/Memory";
 export default function Home() {
   const [isToggled, setIsToggled] = useState(false);
   const [states, setStates] = useState<eventType[]>([]);
-
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
-  };
 
   return (
     <main className="">

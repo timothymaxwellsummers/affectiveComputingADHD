@@ -3,12 +3,13 @@ import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import LlamaService from "../services/llamaService";
 import { eventType } from "../types/types";
+import { Game } from "../types/types";
 
 const llamaService = new LlamaService("https://ollama.medien.ifi.lmu.de");
 
 interface NotificationHandlerProps {
   states: eventType[];
-  game: string;
+  game: Game;
   sessionId: string;
 }
 
@@ -27,7 +28,7 @@ const NotificationHandler: React.FC<NotificationHandlerProps> = ({
         console.log("Generating notification...");
         const response = await llamaService.generateResponse(
           adhdEvent,
-          game,
+          game.name,
           sessionId
         );
         console.log("Notification response:", response);
