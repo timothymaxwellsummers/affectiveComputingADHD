@@ -10,6 +10,7 @@ export enum eventType {
   sad,
   angry,
   notConcentrating,
+  neutral,
 }
 
 export interface TrackedEmotionState {
@@ -28,4 +29,21 @@ export interface SessionData {
 export interface Game {
   name: string;
   url?: string;
+}
+
+export interface GameSessionData {
+  sessionId: string;
+  time: string;
+  energyScore: number;
+  gameData: GameData[];
+}
+
+export interface GameData {
+  game: Game;
+  emotions: Emotion[];
+}
+
+export interface Emotion {
+  emotion: eventType;
+  attention: boolean;
 }
