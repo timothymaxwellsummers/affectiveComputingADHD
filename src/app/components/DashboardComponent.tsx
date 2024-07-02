@@ -1,23 +1,17 @@
-// DashboardComponent.tsx
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import EmotionDetection from "./EmotionDetection";
 import FaceDetection from "./FaceDetection";
 import EmotionBar from "./EmotionBar";
-import { eventType } from "../types/types";
+import { eventType, Emotion } from "../types/types";
 
 interface DashboardProps {
-  devMode: boolean;
-  states: eventType[];
-  setStates: React.Dispatch<React.SetStateAction<eventType[]>>;
+  gameEmotions: Emotion[];
+  addEmotion: (newEmotion: Emotion) => void;
 }
-import EnergyBarometer from "./EnergyBarometer";
 
-const Dashboard: React.FC<DashboardProps> = ({
-  devMode,
-  states,
-  setStates,
-}) => {
+const Dashboard: React.FC<DashboardProps> = ({ gameEmotions, addEmotion }) => {
+  const devMode = false;
   const [emotions, setEmotions] = useState({
     happy: 0,
     sad: 0,
@@ -28,111 +22,36 @@ const Dashboard: React.FC<DashboardProps> = ({
     neutral: 0,
   });
   const [lookingAtScreen, setLookingAtScreen] = useState(false);
-  const [attentivenessScore, setAttentivenessScore] = useState(100);
 
-  const lookingAtScreenCount = useRef(0);
-  const intervalCount1 = useRef(0);
-
-  const happyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const sadTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const angryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const attentiveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const emotionsRef = useRef(emotions);
+  const lookingAtScreenRef = useRef(lookingAtScreen);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Ensure intervalCount1 is not zero to avoid division by zero
-      if (intervalCount1.current > 0) {
-        setAttentivenessScore(
-          lookingAtScreenCount.current / intervalCount1.current
-        );
-      } else {
-        setAttentivenessScore(0); // Set to 0 or some default value if intervalCount1 is zero
-      }
-
-      // Reset counters for the next interval
-      lookingAtScreenCount.current = 0;
-      intervalCount1.current = 0;
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
+    emotionsRef.current = emotions;
+    lookingAtScreenRef.current = lookingAtScreen;
+  }, [emotions, lookingAtScreen]);
 
   useEffect(() => {
-    // Track if user is looking at the screen within the interval
-    const interval = setInterval(() => {
-      intervalCount1.current += 1;
-      if (lookingAtScreen) {
-        lookingAtScreenCount.current += 1;
+    const intervalId = setInterval(() => {
+      const { happy, sad, angry, neutral } = emotionsRef.current;
+      const isLookingAtScreen = lookingAtScreenRef.current;
+
+      if (happy > 0.5) {
+        addEmotion({ emotion: eventType.happy, attention: isLookingAtScreen });
+      } else if (sad > 0.5) {
+        addEmotion({ emotion: eventType.sad, attention: isLookingAtScreen });
+      } else if (angry > 0.5) {
+        addEmotion({ emotion: eventType.angry, attention: isLookingAtScreen });
+      } else if (neutral > 0.5) {
+        addEmotion({
+          emotion: eventType.neutral,
+          attention: isLookingAtScreen,
+        });
       }
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, [lookingAtScreen]);
-
-  useEffect(() => {
-    const addState = (state: eventType) => {
-      setStates((prev) => [...prev, state]);
-    };
-
-    const removeState = (state: eventType) => {
-      setStates((prev) => prev.filter((s) => s !== state));
-    };
-
-    const handleAttentiveState = (
-      emotion: number,
-      event: eventType,
-      timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>
-    ) => {
-      if (emotion < 0.5) {
-        if (!states.includes(event)) {
-          addState(event);
-        }
-
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-
-        timeoutRef.current = setTimeout(() => {
-          removeState(event);
-        }, 8000);
-      }
-    };
-
-    const handleState = (
-      emotion: number,
-      event: eventType,
-      timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>
-    ) => {
-      if (emotion > 0.5) {
-        if (!states.includes(event)) {
-          addState(event);
-        }
-
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-
-        timeoutRef.current = setTimeout(() => {
-          removeState(event);
-        }, 8000);
-      }
-    };
-
-    handleState(emotions.happy, eventType.happy, happyTimeoutRef);
-    handleState(emotions.sad, eventType.sad, sadTimeoutRef);
-    handleState(emotions.angry, eventType.angry, angryTimeoutRef);
-    handleAttentiveState(
-      attentivenessScore,
-      eventType.notConcentrating,
-      attentiveTimeoutRef
-    );
-  }, [
-    emotions.happy,
-    emotions.sad,
-    emotions.angry,
-    attentivenessScore,
-    states,
-  ]);
+    return () => clearInterval(intervalId);
+  }, [addEmotion]);
 
   return (
     <>
@@ -189,8 +108,6 @@ const Dashboard: React.FC<DashboardProps> = ({
                       : "Not Looking at Screen"}
                   </p>
                 </div>
-                <h2 className="text-xl font-semibold">Attentiveness Score</h2>
-                <p className="text-lg">{attentivenessScore.toFixed(2)}</p>
               </div>
               <div>
                 <h2 className="text-xl font-semibold">Emotion Tracking</h2>
@@ -217,18 +134,6 @@ const Dashboard: React.FC<DashboardProps> = ({
                   value={emotions.neutral}
                   emoji="😐"
                 />
-              </div>
-              
-              <div className="mt-4">
-                <h2 className="text-xl font-semibold">Current States</h2>
-                {states.length === 0 && (
-                  <p className="text-lg">No active states</p>
-                )}
-                {states.map((state, index) => (
-                  <p key={index} className="text-lg">
-                    {eventType[state]}
-                  </p>
-                ))}
               </div>
             </div>
           )}

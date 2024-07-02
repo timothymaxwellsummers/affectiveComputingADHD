@@ -2,25 +2,23 @@
 import React, { use, useEffect, useState, useRef } from "react";
 import DashboardComponent from "./components/DashboardComponent";
 import Game from "./components/Game";
-import { eventType } from "./types/types";
-import MemoryGame from "./components/Memory";
+import { eventType, GameSessionData, Emotion } from "./types/types";
 import EnergyBarometer from "./components/EnergyBarometer";
 import {
   initializeGameSessionData,
   saveGameSessionData,
 } from "./services/localStorageService";
-import { GameSessionData } from "./types/types";
 
 export default function Home() {
-  const [isToggled, setIsToggled] = useState(false);
+  //old emotionStates logic
   const [states, setStates] = useState<eventType[]>([]);
   const [showBarometer, setShowBarometer] = useState(true);
-  const [sessionData, setSessionData] = useState<GameSessionData>(initializeGameSessionData);
+  const [sessionData, setSessionData] = useState<GameSessionData>(
+    initializeGameSessionData
+  );
   const sessionInitialized = useRef(false);
-
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
-  };
+  //emotion logic for dashboard
+  const [gameEmotions, setGameEmotions] = useState<Emotion[]>([]);
 
   const closeModal = () => {
     setShowBarometer(false);
@@ -33,17 +31,28 @@ export default function Home() {
     }
   }, []);
 
+  const addEmotion = (newEmotion: Emotion) => {
+    setGameEmotions((prevEmotions) => [...prevEmotions, newEmotion]);
+  };
+
+  useEffect(() => {
+    console.log("Game Emotions ✅", gameEmotions);
+  } , [gameEmotions]);
+
   return (
     <main className="">
       <div className="">
         <h1 className="text-2xl font-bold mt-2 mb-4 ml-4 text-[rgb(0,14,128)]">
           Affective ADHD
         </h1>
-        <Game states={states} sessionData={sessionData} />
+        <Game
+          sessionData={sessionData}
+          setGameEmotions={setGameEmotions}
+          gameEmotions={gameEmotions}
+        />
         <DashboardComponent
-          devMode={isToggled}
-          states={states}
-          setStates={setStates}
+          gameEmotions={gameEmotions}
+          addEmotion={addEmotion}
         />
         {showBarometer && (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">

@@ -35,19 +35,18 @@ export const addGameData = (sessionId: string, game: Game) => {
   }
 };
 
-// Add a new Emotion to the Emotion array of a specific GameData entry
-// ToDo change to pass emotionArray -> call after a game is played and emotions are tracked
-export const addEmotion = (sessionId: string, gameName: string, emotion: Emotion) => {
-  const sessions = getGameSessionsData();
-  const session = sessions.find(session => session.sessionId === sessionId);
-  if (session) {
-    const gameData = session.gameData.find(data => data.game.name === gameName);
-    if (gameData) {
-      gameData.emotions.push(emotion);
-      localStorage.setItem('gameSessions', JSON.stringify(sessions));
+// Add a new Emotion array to the Emotion array of a specific GameData entry
+export const addEmotions = (sessionId: string, gameName: string, emotions: Emotion[]) => {
+    const sessions = getGameSessionsData();
+    const session = sessions.find(session => session.sessionId === sessionId);
+    if (session) {
+      const gameData = session.gameData.find(data => data.game.name === gameName);
+      if (gameData) {
+        gameData.emotions = [...gameData.emotions, ...emotions];
+        localStorage.setItem('gameSessions', JSON.stringify(sessions));
+      }
     }
-  }
-};
+  };
 
 // Update the energy score for a specific session
 export const updateEnergyScore = (sessionId: string, energyScore: number) => {

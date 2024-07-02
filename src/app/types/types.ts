@@ -9,7 +9,6 @@ export enum eventType {
   happy,
   sad,
   angry,
-  notConcentrating,
   neutral,
 }
 
