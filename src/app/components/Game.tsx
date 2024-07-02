@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, use } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { Game, eventType } from "../types/types";
 import Pill from "./Pill";
@@ -7,29 +7,23 @@ import NotificationHandler from "./NotificationHandler";
 import LocalStorageHandler from "./LocalStorageHandler";
 import { SessionData } from "../types/types";
 import GameContainer from "./GameContainer";
+import { GameSessionData } from "../types/types";
+import { addGameData } from "../services/localStorageService";
 
 interface GameProps {
   states: eventType[];
+  sessionData: GameSessionData;
 }
 
-const Game: React.FC<GameProps> = ({ states }) => {
+const Game: React.FC<GameProps> = ({ states, sessionData }) => {
 
   const [selectedGame, setSelectedGame] = useState<Game>({ name: "Memory Game" });
 
-  const [sessionId, setSessionId] = useState<string>("");
-  const [sessionData, setSessionData] = useState<SessionData | null>(null);
-
   useEffect(() => {
-    setSessionId(uuidv4());
-  }, []);
-
-  const handleSessionDataUpdate = (
-    newSessionId: string,
-    newSessionData: SessionData
-  ) => {
-    setSessionId(newSessionId);
-    setSessionData(newSessionData);
-  };
+    if (selectedGame) {
+      addGameData(sessionData.sessionId, selectedGame);
+    }
+  } , [selectedGame]);
 
   //ToDo Integrate Memory Game
   const games: Game[] = useMemo(
@@ -72,7 +66,7 @@ const Game: React.FC<GameProps> = ({ states }) => {
       <NotificationHandler
         states={states}
         game={selectedGame}
-        sessionId={sessionId}
+        sessionId={sessionData.sessionId}
       />
       {selectedGame && (
        <GameContainer game={selectedGame} />

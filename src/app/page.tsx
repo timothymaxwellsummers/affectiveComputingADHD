@@ -39,7 +39,7 @@ export default function Home() {
         <h1 className="text-2xl font-bold mt-2 mb-4 ml-4 text-[rgb(0,14,128)]">
           Affective ADHD
         </h1>
-        <Game states={states} />
+        <Game states={states} sessionData={sessionData} />
         <DashboardComponent
           devMode={isToggled}
           states={states}

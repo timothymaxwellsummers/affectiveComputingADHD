@@ -29,6 +29,7 @@ const EnergyBarometer: React.FC<EnergyBarometerProps> = ({sessionData}) => {
 
     setEnergyLevel(clampedEnergyLevel);
     updateEnergyScore(sessionData.sessionId, clampedEnergyLevel);
+    sessionData.energyScore = clampedEnergyLevel;
     setEnergyLevels([...energyLevels, clampedEnergyLevel]);
   };
 
