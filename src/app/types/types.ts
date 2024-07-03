@@ -46,3 +46,9 @@ export interface Emotion {
   emotion: eventType;
   attention: boolean;
 }
+
+export interface DailyChartData {
+  date: string;
+  energyScore: number;
+  attentivenessScore: number;
+}

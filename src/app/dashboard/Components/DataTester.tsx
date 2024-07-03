@@ -6,11 +6,16 @@ import {
   GameData,
   Emotion,
   eventType,
-} from "../types/types";
-import { getGameSessionsData } from "../services/localStorageService";
+} from "../../types/types";
+import { getGameSessionsData } from "../../services/localStorageService";
 
 interface DataTesterProps {
   // Define your props here
+}
+
+const calculateAttentivenessScore = (emotions: Emotion[]): number => {
+  const attentivenessEmotions = emotions.filter((emotion) => emotion.attention===true);
+  return attentivenessEmotions.length / emotions.length;
 }
 
 const DataTester: React.FC<DataTesterProps> = () => {
@@ -54,14 +59,17 @@ const DataTester: React.FC<DataTesterProps> = () => {
               <div>
                 <h4 className="text-md font-semibold">Emotions:</h4>
                 {gameData.emotions.length > 0 ? (
-                  <ul className="list-disc list-inside">
-                    {gameData.emotions.map((emotion, index) => (
-                      <li key={index}>
-                        Emotion: {eventType[emotion.emotion]}, Attention:{" "}
-                        {emotion.attention ? "Yes" : "No"}
-                      </li>
-                    ))}
-                  </ul>
+                  <div>
+                    <ul className="list-disc list-inside">
+                      {gameData.emotions.map((emotion, index) => (
+                        <li key={index}>
+                          Emotion: {eventType[emotion.emotion]}, Attention:{" "}
+                          {emotion.attention ? "Yes" : "No"}
+                        </li>
+                      ))}
+                    </ul>
+                    <p><b>Attentiveness Score: </b>{calculateAttentivenessScore(gameData.emotions)}</p>
+                  </div>
                 ) : (
                   <p>No emotions recorded.</p>
                 )}

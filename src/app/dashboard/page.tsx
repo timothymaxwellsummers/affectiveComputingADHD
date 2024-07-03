@@ -1,6 +1,6 @@
 import React from 'react';
-import SymptomLineChart from './SymptomLineChart';
-import DataTester from './DataTester';
+import SymptomLineChart from './Components/SymptomLineChart';
+import DataTester from './Components/DataTester';
 
 const DashboardPage: React.FC = () => {
     return (
