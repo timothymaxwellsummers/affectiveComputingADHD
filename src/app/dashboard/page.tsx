@@ -1,5 +1,6 @@
 import React from 'react';
 import SymptomLineChart from './SymptomLineChart';
+import DataTester from './DataTester';
 
 const DashboardPage: React.FC = () => {
     return (
@@ -51,6 +52,7 @@ const DashboardPage: React.FC = () => {
             </div>
             </div>
         </div>
+        <DataTester />
     </div>
     );
 };

@@ -35,10 +35,6 @@ export default function Home() {
     setGameEmotions((prevEmotions) => [...prevEmotions, newEmotion]);
   };
 
-  useEffect(() => {
-    console.log("Game Emotions ✅", gameEmotions);
-  } , [gameEmotions]);
-
   return (
     <main className="">
       <div className="">
