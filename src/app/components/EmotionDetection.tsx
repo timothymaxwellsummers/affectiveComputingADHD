@@ -21,6 +21,9 @@ const EmotionDetection: React.FC<EmotionDetectionProps> = ({ onEmotionUpdate }) 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [initializing, setInitializing] = useState(true);
 
+  const [prevBox, setPrevBox] = useState<{ x: number, y: number } | null>(null);
+  const [prevTime, setPrevTime] = useState<number | null>(null);
+
   useEffect(() => {
     const loadModels = async () => {
       const MODEL_URL = '/models';
@@ -82,6 +85,21 @@ const EmotionDetection: React.FC<EmotionDetectionProps> = ({ onEmotionUpdate }) 
             neutral: expressions.neutral
           };
           onEmotionUpdate(emotions);
+          const currentBox = resizedDetections[0].detection.box;
+          const currentTime = Date.now();
+          
+          if (prevBox && prevTime) {
+            const dx = currentBox.x - prevBox.x;
+            const dy = currentBox.y - prevBox.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const dt = (currentTime - prevTime) / 1000; // convert ms to seconds
+            const speed = distance / dt; // pixels per second
+          
+            console.log(`Speed: ${speed.toFixed(2)} pixels/second`);
+          }
+          
+          setPrevBox({ x: currentBox.x, y: currentBox.y });
+          setPrevTime(currentTime);
         }
       }
     }, 100);
