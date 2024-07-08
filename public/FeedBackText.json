@@ -3,5 +3,12 @@
   "noMatch": "Do not worry, it is a bit difficult - I am sure you will find a solution next time.",
   "reset": "Game has been reset. Good luck this time!",
   "wrongGuess": "I think it is great that you are tring to find the right match! ",
-  "won": "Congrats, all matches found"
+  "won": "Congrats, all matches found",
+  "irgendwas" :"Irgendwas",
+  "empfehlungHyperaktivitaet": " Das Kind hat heute einen hohen Hyperaktivitätswert. Wir empfehlen mit dem Kind heute noch einen Spaziergang in der Natur zu machen oder treiben Sie gemeinsam Sport, um die Hyperaktivität positiv zu nutzen.",
+  "empfehlungImpulsivitaet": "Heute ist der Impulsivitätswert ihres Kides hoch. Spielen Sie gemeinsam ein Geschicklichkeitsspiel wie Jenga oder Memory, um die Impulskontrolle Ihres Kindes zu fördern. Machen Sie Atemübungen oder kindgerechte Yoga-Übungen, um dabei zu helfen, sich zu beruhigen.",
+  "empfehlungUnaufmerksamkeit": " Das Kind hat heute einen hohen Unaufmerksamkeitswert. Sie könnten sich zusammen mit dem Kind mit handwerklichen Aktivitäten wie dem Bau von Modellen, Stricken oder Basteln beschäftigen, um Kreativität und Konzentration zu fördern.",
+  "gesamttrendgut":"Die Scores Ihres Kindes und damit die ADHS Symptome werden immer geringer. Herzlichen Glückwunsch, Ihr Kind macht beeindruckende Fortschritte.",
+  "gesamttrendschlecht":"Die Scores Ihres Kindes und damit die ADHS Symptome werden leider höher. Beobachten wir wie sich die Symptomausprägung über die Zeit weiterentwickelt, um weitere Schlüsse ziehen zu können."
 }
+
