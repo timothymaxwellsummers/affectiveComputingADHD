@@ -51,4 +51,5 @@ export interface DailyChartData {
   date: string;
   energyScore: number;
   attentivenessScore: number;
+  impulsivityScore: number;
 }
