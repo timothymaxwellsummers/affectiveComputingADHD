@@ -82,8 +82,8 @@ export const generateDailyChartData = (
     return {
       date: formatDate(session.time),
       Hyperaktivität: session.energyScore / 100,
-      Aufmersamkeit: attentivenessScoresSumAvg,
-      Impulsivität: impulsivityScoresSumAvg,
+      Aufmersamkeit: attentivenessScoresSumAvg.toFixed(2),
+      Impulsivität: impulsivityScoresSumAvg.toFixed(2),
       gamesPlayed: session.gameData.map((data) => data.game),
     };
   });
