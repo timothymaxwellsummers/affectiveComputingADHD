@@ -31,7 +31,6 @@ const DailyChart: React.FC<DailyChartProps> = (props) => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Daily Chart Data</h1>
       <ResponsiveContainer width="100%" height={400}>
         <AreaChart
           data={dailyChartData}
@@ -58,21 +57,21 @@ const DailyChart: React.FC<DailyChartProps> = (props) => {
           <Legend />
           <Area
             type="monotone"
-            dataKey="energyScore"
+            dataKey="Hyperaktivität"
             stroke="#8884d8"
             fillOpacity={1}
             fill="url(#colorEnergy)"
           />
           <Area
             type="monotone"
-            dataKey="attentivenessScore"
+            dataKey="Aufmersamkeit"
             stroke="#82ca9d"
             fillOpacity={1}
             fill="url(#colorAttentiveness)"
           />
           <Area
             type="monotone"
-            dataKey="impulsivityScore"
+            dataKey="Impulsivität"
             stroke="#ffc658"
             fillOpacity={1}
             fill="url(#colorImpulsivity)"

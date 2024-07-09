@@ -80,11 +80,24 @@ export const generateDailyChartData = (
 
     // Return the daily chart data
     return {
-      date: session.time,
-      energyScore: session.energyScore/100,
-      attentivenessScore: attentivenessScoresSumAvg,
-      impulsivityScore: impulsivityScoresSumAvg,
+      date: formatDate(session.time),
+      Hyperaktivität: session.energyScore / 100,
+      Aufmersamkeit: attentivenessScoresSumAvg,
+      Impulsivität: impulsivityScoresSumAvg,
       gamesPlayed: session.gameData.map((data) => data.game),
     };
   });
 };
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+
+  // Extract day, month, hours, and minutes
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  // Construct the formatted date string
+  return `${day}.${month}. ${hours}:${minutes}`;
+}

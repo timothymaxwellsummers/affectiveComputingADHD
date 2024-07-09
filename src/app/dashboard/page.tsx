@@ -1,9 +1,7 @@
 import React from "react";
-import SymptomLineChart from "./Components/SymptomLineChart";
 import DataTester from "./Components/DataTester";
 import SessionDataDisplay from "./Components/SessionDataDisplay";
 import DailyChart from "./Components/SessionChart";
-
 
 const DashboardPage: React.FC = () => {
   return (
@@ -18,7 +16,7 @@ const DashboardPage: React.FC = () => {
               Symptomverlauf über den letzten Monat
             </h1>
             <div className="pt-4">
-              <SymptomLineChart />
+              <DailyChart />
             </div>
             <h1 className="text-xl font-semibold pt-4">Trend:</h1>
             <p className="text-gray-700">
@@ -62,7 +60,6 @@ const DashboardPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <DailyChart />
       <SessionDataDisplay />
       <DataTester />
     </div>
