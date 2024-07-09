@@ -1,7 +1,9 @@
 import React from "react";
 import SymptomLineChart from "./Components/SymptomLineChart";
 import DataTester from "./Components/DataTester";
-import DailyChart from "./Components/DailyChart";
+import SessionDataDisplay from "./Components/SessionDataDisplay";
+import DailyChart from "./Components/SessionChart";
+
 
 const DashboardPage: React.FC = () => {
   return (
@@ -61,6 +63,7 @@ const DashboardPage: React.FC = () => {
         </div>
       </div>
       <DailyChart />
+      <SessionDataDisplay />
       <DataTester />
     </div>
   );

@@ -4,11 +4,10 @@ import { getGameSessionsData } from "../../services/localStorageService";
 import { generateDailyChartData } from "./service/dataHandler";
 import { GameSessionData, DailyChartData, Game } from "../../types/types";
 
-interface DailyChartProps {
-  // Define the props for the DailyChart component here
+interface SessionDataDisplayProps {
 }
 
-const DailyChart: React.FC<DailyChartProps> = (props) => {
+const SessionDataDisplay: React.FC<SessionDataDisplayProps> = (props) => {
   const [gameSessions, setGameSessions] = useState<GameSessionData[]>([]);
   const [dailyChartData, setDailyChartData] = useState<DailyChartData[]>([]);
 
@@ -42,10 +41,11 @@ const DailyChart: React.FC<DailyChartProps> = (props) => {
             <p>Attentiveness Score: {data.attentivenessScore}</p>
             <p>Games played: {data.gamesPlayed.map((game, index) => (<span>{game.name}, </span>))}</p>
           </div>
+
         ))}
       </div>
     </div>
   );
 };
 
-export default DailyChart;
+export default SessionDataDisplay;

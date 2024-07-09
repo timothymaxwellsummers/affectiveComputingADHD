@@ -81,7 +81,7 @@ export const generateDailyChartData = (
     // Return the daily chart data
     return {
       date: session.time,
-      energyScore: session.energyScore,
+      energyScore: session.energyScore/100,
       attentivenessScore: attentivenessScoresSumAvg,
       impulsivityScore: impulsivityScoresSumAvg,
       gamesPlayed: session.gameData.map((data) => data.game),

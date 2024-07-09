@@ -52,4 +52,5 @@ export interface DailyChartData {
   energyScore: number;
   attentivenessScore: number;
   impulsivityScore: number;
+  gamesPlayed: Game[];
 }
