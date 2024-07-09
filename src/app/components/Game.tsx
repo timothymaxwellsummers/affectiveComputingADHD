@@ -26,13 +26,22 @@ const Game: React.FC<GameProps> = ({ sessionData, setGameEmotions, gameEmotions 
   } , [selectedGame]);
 
   useEffect(() => {
-    return () => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       if (selectedGame) {
         addEmotions(sessionData.sessionId, selectedGame.name, gameEmotions);
         setGameEmotions([]);
       }
+      // If you want to show a confirmation dialog
+      event.preventDefault();
+      event.returnValue = '';
     };
-  }, []);
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [selectedGame, sessionData.sessionId, gameEmotions, setGameEmotions]);
 
   const handleGameSelect = (game: Game) => {
     if (selectedGame) {

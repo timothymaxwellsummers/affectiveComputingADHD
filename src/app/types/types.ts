@@ -50,7 +50,7 @@ export interface Emotion {
 export interface DailyChartData {
   date: string;
   Hyperaktivität: number;
-  Aufmersamkeit: number;
-  Impulsivität: number;
+  Aufmersamkeit: string;
+  Impulsivität: string;
   gamesPlayed: Game[];
 }
