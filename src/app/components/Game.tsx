@@ -55,15 +55,18 @@ const Game: React.FC<GameProps> = ({ sessionData, setGameEmotions, gameEmotions 
   //ToDo Integrate Memory Game
   const games: Game[] = useMemo(
     () => [
-      { name: "Memory Game" },
-      { name: "Neon Nibblet", url: "https://cdn.htmlgames.com/NeonNibblet/" },
+      { name:'VioletPointGame'},
+      { name:'Puzzle'},
+      { name: 'Memory Game'},
+      
+      /*{ name: "Neon Nibblet", url: "https://cdn.htmlgames.com/NeonNibblet/" },
       {
         name: "Ninja Breakout", url: "https://cdn.htmlgames.com/NinjaBreakout/",
       },
       { name: "Upsidedown", url: "https://cdn.htmlgames.com/UpsideDown/" },
       {
         name: "Coloring for Kids", url: "https://cdn.htmlgames.com/ColoringForKids/",
-      },
+      },*/
     ],
     []
   );
