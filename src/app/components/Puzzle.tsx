@@ -1,5 +1,5 @@
 'use client'
-            import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PuzzlePiece from './PuzzlePiece';
 import './Puzzle.css';
 

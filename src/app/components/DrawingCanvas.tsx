@@ -2,6 +2,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import '../DrawingCanvas.css'; // Import the CSS file for styling
 
+ /*Malen*/
 const DrawingCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);

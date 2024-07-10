@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 
+ /*Memory*/
 interface Card {
   id: number;
   image: string;

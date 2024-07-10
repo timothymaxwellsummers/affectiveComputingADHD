@@ -7,6 +7,7 @@ interface PuzzlePieceProps {
   onClick: () => void;
 }
 
+ /*Puzzle Piece*/
 const PuzzlePiece: React.FC<PuzzlePieceProps> = ({ position, index, onClick }) => {
   return (
     <div

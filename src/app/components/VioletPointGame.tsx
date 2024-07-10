@@ -6,6 +6,7 @@ interface Point {
   y: number;
 }
 
+ /*Maulwurf Kirmes Game*/
 const VioletPointGame: React.FC = () => {
   const [points, setPoints] = useState<Point[]>([]);
   const [hits, setHits] = useState<number>(0);
