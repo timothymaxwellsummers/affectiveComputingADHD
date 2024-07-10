@@ -19,7 +19,7 @@ const GameContainer: React.FC<GameContainerProps> = ({ game }) => {
           ></iframe>
         </div>
       ) : (
-        <MemoryGame />
+        <MemoryGame/>
       )}
     </div>
   );
