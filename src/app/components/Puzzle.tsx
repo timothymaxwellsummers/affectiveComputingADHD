@@ -16,11 +16,11 @@ const Puzzle: React.FC = () => {
     setPos(shuffledPositions);
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (isSolved(positions)) {
       alert("Congratulations! You solved the puzzle!");
     }
-  }, [positions]);
+  }, [positions]);*/
 
   const handlePieceClick = (index: number) => {
     const emptyIndex = positions.indexOf(15);

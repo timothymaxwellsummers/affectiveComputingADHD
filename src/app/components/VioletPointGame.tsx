@@ -73,7 +73,7 @@ const VioletPointGame: React.FC = () => {
       <p className="text-lg font-bold text-[rgb(0,0,128)] mb-4">Hits: {hits}</p>
       <div
         ref={fieldRef}
-        className="relative w-1/2 h-96 rounded-xl shadow-xl bg-[rgb(255,255,255)] overflow-hidden"
+        className="relative w-80 h-96 rounded-xl shadow-xl bg-[rgb(255,255,255)] "
       >
         {points.map((point, index) => (
           <div
