@@ -72,8 +72,8 @@ const Game: React.FC<GameProps> = ({ sessionData, setGameEmotions, gameEmotions 
   );
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <div className="flex space-x-4 mb-4 p-4 bg-[rgb(255,255,255)] rounded-xl shadow-xl z-50">
+    <div className="flex flex-col items-center justify-center h-full p-20">
+      <div className="flex  space-x-4 mb-4 p-4 bg-[rgb(255,255,255)] rounded-xl shadow-xl z-50">
         {games.map((game) => (
           <button
             key={game.name}

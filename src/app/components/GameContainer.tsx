@@ -10,7 +10,7 @@ interface GameContainerProps {
 
 const GameContainer: React.FC<GameContainerProps> = ({ game }) => {
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center p-10">
       {game.url ? (
         <div>
           <iframe

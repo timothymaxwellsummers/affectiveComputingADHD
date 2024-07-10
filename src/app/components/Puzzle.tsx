@@ -21,6 +21,17 @@ const Puzzle: React.FC = () => {
       alert("Congratulations! You solved the puzzle!");
     }
   }, [positions]);*/
+  useEffect(() => {
+    resetPuzzle();
+  }, []);
+
+  const resetPuzzle = () => {
+    const shuffledPositions = shuffleArray(initialPositions);
+    setPos(shuffledPositions);
+    setIncorrectSwipes(0);
+    setRememberFrequency([]);
+    lastMoveTime.current = null;
+  };
 
   const handlePieceClick = (index: number) => {
     const emptyIndex = positions.indexOf(15);
@@ -61,7 +72,14 @@ const Puzzle: React.FC = () => {
           <span key={i}>{freq.toFixed(2)}s {i < moveFrequency.length - 1 ? ', ' : ''}</span>
         ))}</p>
       </div>
+      <button 
+        onClick={resetPuzzle} 
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
+      >
+        Reset Game
+      </button> 
     </div>
+    
   );
 };
 

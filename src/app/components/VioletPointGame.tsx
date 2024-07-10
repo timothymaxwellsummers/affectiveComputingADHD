@@ -95,14 +95,14 @@ const VioletPointGame: React.FC = () => {
         </button>
         <button
           onClick={handleReset}
-          className="px-4 py-2 bg-red-500 text-white rounded"
+          className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
         >
           Reset
         </button>
         <button
           onClick={handlePause}
           disabled={!started}
-          className="px-4 py-2 bg-yellow-500 text-white rounded disabled:bg-gray-500"
+          className="px-4 py-2 bg-violet-500 text-white rounded disabled:bg-yellow-500"
         >
           {paused ? 'Resume' : 'Pause'}
         </button>
