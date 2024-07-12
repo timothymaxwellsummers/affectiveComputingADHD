@@ -68,12 +68,12 @@ const VioletPointGame: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4">
+    <div className="flex flex-col items-center pt-4">
       <h1 className="text-2xl font-bold text-[rgb(0,0,128)] mb-4">Violet Point Game</h1>
       <p className="text-lg font-bold text-[rgb(0,0,128)] mb-4">Hits: {hits}</p>
       <div
         ref={fieldRef}
-        className="relative w-1/2 h-96 rounded-xl shadow-xl bg-[rgb(255,255,255)] overflow-hidden"
+        className="relative w-80 h-96 rounded-xl shadow-xl bg-[rgb(255,255,255)] "
       >
         {points.map((point, index) => (
           <div
@@ -85,7 +85,7 @@ const VioletPointGame: React.FC = () => {
         ))}
       </div>
       {gameOver && <p className="text-lg text-red-500">Game Over! You hit {hits} points.</p>}
-      <div className="space-x-2">
+      <div className="space-x-2 pt-3">
         <button
           onClick={handleStart}
           disabled={started && !gameOver}
@@ -95,14 +95,14 @@ const VioletPointGame: React.FC = () => {
         </button>
         <button
           onClick={handleReset}
-          className="px-4 py-2 bg-red-500 text-white rounded"
+          className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
         >
           Reset
         </button>
         <button
           onClick={handlePause}
           disabled={!started}
-          className="px-4 py-2 bg-yellow-500 text-white rounded disabled:bg-gray-500"
+          className="px-4 py-2 bg-violet-500 text-white rounded disabled:bg-yellow-500"
         >
           {paused ? 'Resume' : 'Pause'}
         </button>

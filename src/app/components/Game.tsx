@@ -55,22 +55,25 @@ const Game: React.FC<GameProps> = ({ sessionData, setGameEmotions, gameEmotions 
   //ToDo Integrate Memory Game
   const games: Game[] = useMemo(
     () => [
-      { name: "Memory Game" },
-      { name: "Neon Nibblet", url: "https://cdn.htmlgames.com/NeonNibblet/" },
+      { name:'VioletPointGame'},
+      { name:'Puzzle'},
+      { name: 'Memory Game'},
+      
+      /*{ name: "Neon Nibblet", url: "https://cdn.htmlgames.com/NeonNibblet/" },
       {
         name: "Ninja Breakout", url: "https://cdn.htmlgames.com/NinjaBreakout/",
       },
       { name: "Upsidedown", url: "https://cdn.htmlgames.com/UpsideDown/" },
       {
         name: "Coloring for Kids", url: "https://cdn.htmlgames.com/ColoringForKids/",
-      },
+      },*/
     ],
     []
   );
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <div className="flex space-x-4 mb-4 p-4 bg-[rgb(255,255,255)] rounded-xl shadow-xl z-50">
+    <div className="flex flex-col items-center justify-center h-full pt-0">
+      <div className="flex  space-x-4 mb-4 p-4 bg-[rgb(255,255,255)] rounded-xl shadow-xl z-50">
         {games.map((game) => (
           <button
             key={game.name}

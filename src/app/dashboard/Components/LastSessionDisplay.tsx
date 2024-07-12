@@ -27,24 +27,25 @@ const LastSessionDisplay: React.FC<LastSessionDisplayProps> = (props) => {
     <div>
       {lastSession && (
         <>
-          <div>
-            <h1 className="text-xl font-semibold">Hyperaktivitätsscore:</h1>
+         
+          <div className="">
+            <h1 className="text-xl font-semibold pt-8">Hyperaktivitätsscore:</h1>
             <p className="text-gray-700">{lastSession.energyScore / 100}</p>
           </div>
           <div>
-            <h1 className="text-xl font-semibold">Aufmerksamkeit:</h1>
+            <h1 className="text-xl font-semibold pt-10">Aufmerksamkeit:</h1>
             <p className="text-gray-700">{calculateSessionAttentivenessScore(lastSession.gameData)}</p>
           </div>
           <div>
-            <h1 className="text-xl font-semibold">Impulsivität:</h1>
+            <h1 className="text-xl font-semibold pt-10">Impulsivität:</h1>
             <p className="text-gray-700">{calculateSessionImpulsivityScore(lastSession.gameData)}</p>
           </div>
           <div>
-            <h1 className="text-xl font-semibold">Häufigste Emotion:</h1>
+            <h1 className="text-xl font-semibold pt-10">Häufigste Emotion:</h1>
             <p className="text-gray-700">Glücklich</p>
           </div>
           <div>
-            <h1 className="text-xl font-semibold">
+            <h1 className="text-xl font-semibold pt-10">
               Empfehlung für den restlichen Tag:
             </h1>
             <p className="text-gray-700">
@@ -54,6 +55,7 @@ const LastSessionDisplay: React.FC<LastSessionDisplayProps> = (props) => {
               ausführt.
             </p>
           </div>
+       
         </>
       )}
     </div>
