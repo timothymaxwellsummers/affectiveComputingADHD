@@ -10,7 +10,7 @@ interface EnergyBarometerProps {
   sessionData: GameSessionData;
 }
 
-const EnergyBarometer: React.FC<EnergyBarometerProps> = ({sessionData}) => {
+const EnergyBarometer: React.FC<EnergyBarometerProps> = ({ sessionData }) => {
   const [energyLevel, setEnergyLevel] = useState<number | null>(null);
   const [energyLevels, setEnergyLevels] = useState<number[]>([]);
 
@@ -84,11 +84,17 @@ const EnergyBarometer: React.FC<EnergyBarometerProps> = ({sessionData}) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        width: "600px", // Fixed width for container
+        height: "300px", // Fixed height for container
       }}
     >
       <div
         ref={barometerRef}
-        style={{ position: "relative", display: "inline-block" }}
+        style={{
+          position: "relative",
+          width: "300px", // Fixed width
+          height: "200px", // Fixed height
+        }}
         onClick={handleBarometerClick}
       >
         <ReactSpeedometer
@@ -100,10 +106,20 @@ const EnergyBarometer: React.FC<EnergyBarometerProps> = ({sessionData}) => {
           segmentColors={generateSegmentColors()}
           textColor="black"
           customSegmentLabels={customSegmentLabels}
+          width={300} // Fixed width
+          height={200} // Fixed height
         />
-        {/* Overlay-Div, um Klicks auf das Barometer zu ermöglichen */}
+        {/* Overlay div to capture clicks */}
         <div
-          style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: "300px", // Fixed width
+            height: "200px", // Fixed height
+          }}
         ></div>
       </div>
 
