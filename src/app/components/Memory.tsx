@@ -99,7 +99,7 @@ const MemoryGame: React.FC = () => {
 
 
   return (
-    <div className="p-24">
+    <div className="p-3">
       <h1 className="text-2xl text-[rgb(0,14,128)] font-bold mb-4">Memory Game</h1>
       <div className="bg-white rounded-xl shadow-xl p-4  text-[rgb(0,14,128)] mb-5 max-w-md text-center border text-lg">
           {feedback}

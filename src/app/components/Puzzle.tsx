@@ -55,7 +55,8 @@ const Puzzle: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="p-3">
+      <h1 className="text-2xl text-[rgb(0,14,128)] font-bold mb-4 pb-3">Puzzle!</h1>
       <div className="puzzle-board">
         {positions.map((position, index) => (
           <PuzzlePiece

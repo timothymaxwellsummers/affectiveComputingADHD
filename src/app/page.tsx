@@ -51,11 +51,11 @@ export default function Home() {
           addEmotion={addEmotion}
         />
         {showBarometer && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center pt-12">
             <div className="bg-white p-4 rounded shadow-lg relative text-center">
               <EnergyBarometer sessionData={sessionData} />
               <button
-                className="mt-4 p-2 bg-purple-800 text-white rounded"
+                className="mt-4 p-4 bg-purple-800 text-white rounded"
                 onClick={closeModal}
               >
                 Submit my Energy Level

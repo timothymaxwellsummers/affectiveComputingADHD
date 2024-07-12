@@ -68,7 +68,7 @@ const VioletPointGame: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4">
+    <div className="flex flex-col items-center pt-4">
       <h1 className="text-2xl font-bold text-[rgb(0,0,128)] mb-4">Violet Point Game</h1>
       <p className="text-lg font-bold text-[rgb(0,0,128)] mb-4">Hits: {hits}</p>
       <div
@@ -85,7 +85,7 @@ const VioletPointGame: React.FC = () => {
         ))}
       </div>
       {gameOver && <p className="text-lg text-red-500">Game Over! You hit {hits} points.</p>}
-      <div className="space-x-2">
+      <div className="space-x-2 pt-3">
         <button
           onClick={handleStart}
           disabled={started && !gameOver}
