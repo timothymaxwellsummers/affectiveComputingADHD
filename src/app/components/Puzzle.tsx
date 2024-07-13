@@ -12,11 +12,20 @@ const Puzzle: React.FC = () => {
   const [incorrectMoves, setIncorrectSwipes] = useState<number>(0);
   const [moveFrequency, setRememberFrequency] = useState<number[]>([]);
   const lastMoveTime = useRef<number | null>(null);
+  const [puzzleSolved, setPuzzleSolved] = useState<boolean>(false);
 
   useEffect(() => {
     const shuffledPositions = shuffleArray(initialPositions);
     setPos(shuffledPositions);
   }, []);
+
+  useEffect(() => {
+    if (isSolved(positions)) {
+      setPuzzleSolved(true);
+    } else {
+      setPuzzleSolved(false);
+    }
+  }, [positions]);
 
   /*useEffect(() => {
     if (isSolved(positions)) {
@@ -57,7 +66,18 @@ const Puzzle: React.FC = () => {
   };
 
   getPuzzleScoreRatio = () => {
-    return incorrectMoves / 32; 
+    if (puzzleSolved) {
+      return incorrectMoves / 24; //wenn es gelöst ist, pro Teil 2 Versuche um es richtig anzuordnen
+    }
+    else {
+      if (incorrectMoves === 0) { //wenn nicht gelöst: hat die Person überhaupt gespielt? wenn Nein, -1 als Indikator, dass nicht gespielt
+        return -1;
+      } else {
+      return 32; //falls nicht gelöst aber gespielt: 0 --> deutet sehr auf Symptom hin, dass fertig spielen nicht geschafft.
+    }
+  }
+
+    
   };
 
   return (
