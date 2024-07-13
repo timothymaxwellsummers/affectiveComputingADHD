@@ -6,13 +6,46 @@ import {
   eventType,
 } from "../../../types/types";
 
+// attention: memory
 export const calculateAttentivenessScore = (emotions: Emotion[]): number => {
   const attentivenessEmotions = emotions.filter(
     (emotion) => emotion.attention === true
   );
   return attentivenessEmotions.length / emotions.length;
 };
+// export const calculateAttentivenessScore = (emotions: Emotion[], gameData: GameData[]): number => {
+//   const attentivenessEmotions = emotions.filter(
+//     (emotion) => emotion.attention === true
+//   );
+//   let attentionScore = attentivenessEmotions.length / emotions.length;
 
+//   let gameSpecificScoreTotal = 0;
+//   let gamesTotal = 0;
+
+//   gameData.forEach((data) => {
+//     if (data.game.name === 'Memory Game') {
+//       const score = data.scoreData.gameSpecificScore;
+//       if (score !== -1) {
+//         gameSpecificScoreTotal += score;
+//         gamesTotal += 1;
+//       }
+//     }
+//   });
+
+//   if (gamesTotal > 0) {
+//     const averageGameSpecificScore = gameSpecificScoreTotal / gamesTotal;
+
+//     if (averageGameSpecificScore > 0) {
+//       attentionScore = Math.min(attentionScore + (attentionScore * 0.1), 1);
+//     } else if (averageGameSpecificScore < 0){
+//       attentionScore = Math.max(attentionScore - (attentionScore * 0.1), 0);
+//     }
+//   }
+
+//   return attentionScore;
+// };
+
+// impulsiv: puzzle
 export const calculateImpulsivityScore = (emotions: Emotion[]): number => {
   const impulsivityEmotions = emotions.filter(
     (emotion) => emotion.emotion === eventType.angry
@@ -20,21 +53,96 @@ export const calculateImpulsivityScore = (emotions: Emotion[]): number => {
   return Math.sqrt(impulsivityEmotions.length / emotions.length);
 };
 
-export const calculateSessionImpulsivityScore = (
-  gameData: GameData[]
-): number[] => {
-  return gameData.map((data) => {
-    return calculateImpulsivityScore(data.emotions);
-  });
-};
+// points: hyperaktivität
 
+
+
+// export const calculateSessionAttentivenessScore = (
+//   gameData: GameData[]
+// ): number[] => {
+//   return gameData.map((data) => {
+//     return calculateAttentivenessScore(data.emotions);
+//   });
+// };
 export const calculateSessionAttentivenessScore = (
   gameData: GameData[]
 ): number[] => {
-  return gameData.map((data) => {
+  let gameSpecificScoreTotal = 0;
+  let gamesTotal = 0;
+
+  gameData.forEach((data) => {
+    if (data.game.name === 'Memory Game') {
+      const score = data.scoreData.gameSpecificScore;
+      if (score !== -1) {
+        gameSpecificScoreTotal += score;
+        gamesTotal += 1;
+      }
+    }
+  });
+
+  const attentivenessScores = gameData.map((data) => {
     return calculateAttentivenessScore(data.emotions);
   });
+
+  if (gamesTotal > 0) {
+    const averageGameSpecificScore = gameSpecificScoreTotal / gamesTotal;
+
+    attentivenessScores.forEach((score, index) => {
+      if (averageGameSpecificScore > 0) {
+        attentivenessScores[index] = Math.min(score + (score * 0.1), 1);
+      } else if (averageGameSpecificScore < 0) {
+        attentivenessScores[index] = Math.max(score - (score * 0.1), 0);
+      }
+    });
+  }
+
+  return attentivenessScores;
 };
+
+
+
+// export const calculateSessionImpulsivityScore = (
+//   gameData: GameData[]
+// ): number[] => {
+//   return gameData.map((data) => {
+//     return calculateImpulsivityScore(data.emotions);
+//   });
+// };
+export const calculateSessionImpulsivityScore = (
+  gameData: GameData[]
+): number[] => {
+  let gameSpecificScoreTotal = 0;
+  let gamesTotal = 0;
+
+  gameData.forEach((data) => {
+    if (data.game.name === 'Puzzle') {
+      const score = data.scoreData.gameSpecificScore;
+      if (score !== -1) {
+        gameSpecificScoreTotal += score;
+        gamesTotal += 1;
+      }
+    }
+  });
+
+  const impulsivityScores = gameData.map((data) => {
+    return calculateImpulsivityScore(data.emotions);
+  });
+
+  if (gamesTotal > 0) {
+    const averageGameSpecificScore = gameSpecificScoreTotal / gamesTotal;
+
+    impulsivityScores.forEach((score, index) => {
+      if (averageGameSpecificScore > 0) {
+        impulsivityScores[index] = Math.min(score + (score * 0.1), 1);
+      } else if (averageGameSpecificScore < 0) {
+        impulsivityScores[index] = Math.max(score - (score * 0.1), 0);
+      }
+    });
+  }
+  return impulsivityScores;
+};
+
+
 
 export const generateDailyChartData = (
   gameSessions: GameSessionData[]
