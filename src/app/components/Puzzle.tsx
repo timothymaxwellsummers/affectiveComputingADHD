@@ -73,7 +73,7 @@ const Puzzle: React.FC = () => {
       if (incorrectMoves === 0) { //wenn nicht gelöst: hat die Person überhaupt gespielt? wenn Nein, -1 als Indikator, dass nicht gespielt
         return -1;
       } else {
-      return 32; //falls nicht gelöst aber gespielt: 0 --> deutet sehr auf Symptom hin, dass fertig spielen nicht geschafft.
+      return 3; //falls nicht gelöst aber gespielt: 0 --> deutet sehr auf Symptom hin, dass fertig spielen nicht geschafft.
     }
   }
 

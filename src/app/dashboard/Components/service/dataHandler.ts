@@ -11,110 +11,71 @@ export const calculateAttentivenessScore = (emotions: Emotion[]): number => {
   const attentivenessEmotions = emotions.filter(
     (emotion) => emotion.attention === true
   );
-  return attentivenessEmotions.length / emotions.length;
+  return (attentivenessEmotions.length / emotions.length);
 };
-// export const calculateAttentivenessScore = (emotions: Emotion[], gameData: GameData[]): number => {
-//   const attentivenessEmotions = emotions.filter(
-//     (emotion) => emotion.attention === true
-//   );
-//   let attentionScore = attentivenessEmotions.length / emotions.length;
-
-//   let gameSpecificScoreTotal = 0;
-//   let gamesTotal = 0;
-
-//   gameData.forEach((data) => {
-//     if (data.game.name === 'Memory Game') {
-//       const score = data.scoreData.gameSpecificScore;
-//       if (score !== -1) {
-//         gameSpecificScoreTotal += score;
-//         gamesTotal += 1;
-//       }
-//     }
-//   });
-
-//   if (gamesTotal > 0) {
-//     const averageGameSpecificScore = gameSpecificScoreTotal / gamesTotal;
-
-//     if (averageGameSpecificScore > 0) {
-//       attentionScore = Math.min(attentionScore + (attentionScore * 0.1), 1);
-//     } else if (averageGameSpecificScore < 0){
-//       attentionScore = Math.max(attentionScore - (attentionScore * 0.1), 0);
-//     }
-//   }
-
-//   return attentionScore;
-// };
 
 // impulsiv: puzzle
 export const calculateImpulsivityScore = (emotions: Emotion[]): number => {
   const impulsivityEmotions = emotions.filter(
     (emotion) => emotion.emotion === eventType.angry
   );
-  return Math.sqrt(impulsivityEmotions.length / emotions.length);
+  return Math.sqrt((impulsivityEmotions.length / emotions.length) + 10);
 };
 
-// points: hyperaktivität
-
-
-
-// export const calculateSessionAttentivenessScore = (
-//   gameData: GameData[]
-// ): number[] => {
-//   return gameData.map((data) => {
-//     return calculateAttentivenessScore(data.emotions);
-//   });
-// };
 export const calculateSessionAttentivenessScore = (
   gameData: GameData[]
-): number[] => {
-  let gameSpecificScoreTotal = 0;
+): number => {
+  let attentivenessScoreTotal = 0;
   let gamesTotal = 0;
+  let gameSpecificScoreTotal = 0;
+  let memoryGamesTotal = 0;
 
   gameData.forEach((data) => {
+    const attentivenessScore = calculateAttentivenessScore(data.emotions);
+    attentivenessScoreTotal += isNaN(attentivenessScore) ? 0 : attentivenessScore;
+    gamesTotal += 1;
+
     if (data.game.name === 'Memory Game') {
       const score = data.scoreData.gameSpecificScore;
       if (score !== -1) {
         gameSpecificScoreTotal += score;
-        gamesTotal += 1;
+        memoryGamesTotal += 1;
       }
     }
   });
 
-  const attentivenessScores = gameData.map((data) => {
-    return calculateAttentivenessScore(data.emotions);
-  });
+  let averageAttentivenessScore = 0;
 
   if (gamesTotal > 0) {
-    const averageGameSpecificScore = gameSpecificScoreTotal / gamesTotal;
+    averageAttentivenessScore = attentivenessScoreTotal / gamesTotal;
+    if (memoryGamesTotal > 0) {
+    const averageGameSpecificScore = gameSpecificScoreTotal / memoryGamesTotal;
 
-    attentivenessScores.forEach((score, index) => {
-      if (averageGameSpecificScore > 0) {
-        attentivenessScores[index] = Math.min(score + (score * 0.1), 1);
-      } else if (averageGameSpecificScore < 0) {
-        attentivenessScores[index] = Math.max(score - (score * 0.1), 0);
+      if (averageGameSpecificScore > 1) {
+        averageAttentivenessScore = Math.max(averageAttentivenessScore + (averageAttentivenessScore * -0.1), 0);
+      } else if (averageGameSpecificScore < 1) {
+        averageAttentivenessScore = Math.min(averageAttentivenessScore + (averageAttentivenessScore * 0.1), 1);
       }
-    });
+    }
   }
 
-  return attentivenessScores;
+  return averageAttentivenessScore;
 };
 
 
-
-// export const calculateSessionImpulsivityScore = (
-//   gameData: GameData[]
-// ): number[] => {
-//   return gameData.map((data) => {
-//     return calculateImpulsivityScore(data.emotions);
-//   });
-// };
 export const calculateSessionImpulsivityScore = (
   gameData: GameData[]
-): number[] => {
-  let gameSpecificScoreTotal = 0;
+): number => {
+  let impulsivityScoreTotal = 0;
   let gamesTotal = 0;
+  let puzzleGamesTotal = 0;
+  let gameSpecificScoreTotal = 0;
 
   gameData.forEach((data) => {
+    const impulsivityScore = calculateImpulsivityScore(data.emotions);
+    impulsivityScoreTotal += isNaN(impulsivityScore) ? 0 : impulsivityScore;
+    puzzleGamesTotal += 1;
+
     if (data.game.name === 'Puzzle') {
       const score = data.scoreData.gameSpecificScore;
       if (score !== -1) {
@@ -124,76 +85,83 @@ export const calculateSessionImpulsivityScore = (
     }
   });
 
-  const impulsivityScores = gameData.map((data) => {
-    return calculateImpulsivityScore(data.emotions);
-  });
+  let averageImpulsivityScore = 0;
 
-  if (gamesTotal > 0) {
-    const averageGameSpecificScore = gameSpecificScoreTotal / gamesTotal;
+  if (puzzleGamesTotal > 0) {
+    averageImpulsivityScore = impulsivityScoreTotal / puzzleGamesTotal;
+    if (gamesTotal > 0) {
+      const averageGameSpecificScore = gameSpecificScoreTotal / gamesTotal;
 
-    impulsivityScores.forEach((score, index) => {
-      if (averageGameSpecificScore > 0) {
-        impulsivityScores[index] = Math.min(score + (score * 0.1), 1);
-      } else if (averageGameSpecificScore < 0) {
-        impulsivityScores[index] = Math.max(score - (score * 0.1), 0);
+      if (averageGameSpecificScore > 1) {
+        averageImpulsivityScore = Math.min(averageImpulsivityScore + (averageImpulsivityScore * 0.1), 1);
+      } else if (averageGameSpecificScore < 1) {
+        averageImpulsivityScore = Math.max(averageImpulsivityScore - (averageImpulsivityScore * 0.1), 0);
       }
-    });
+    }
   }
-  return impulsivityScores;
+
+  return averageImpulsivityScore;
 };
 
+
+export const calculateSessionHyperScore = (
+  gameData: GameData[]
+): number => {
+  let gameSpecificScoreTotal = 0;
+  let VioletPointGamesTotal = 0;
+
+  gameData.forEach((data) => {
+    if (data.game.name === 'VioletPointGame') {
+      const score = data.scoreData.gameSpecificScore;
+      if (score !== -1) {
+        gameSpecificScoreTotal += score;
+        VioletPointGamesTotal += 1;
+      }
+    }
+  });
+
+  let averageHyperScore = 0;
+
+  if (VioletPointGamesTotal > 0) {
+    const averageGameSpecificScore = gameSpecificScoreTotal / VioletPointGamesTotal;
+    console.log("hyper", averageGameSpecificScore);
+
+      if (averageGameSpecificScore === 1) {
+        averageHyperScore = -0.2;
+      } else if (averageGameSpecificScore > 0.8) {
+        averageHyperScore = -0.1;
+      }
+      } else {
+        averageHyperScore = 0.1;
+      }
+
+  return averageHyperScore;
+};
 
 
 export const generateDailyChartData = (
   gameSessions: GameSessionData[]
 ): DailyChartData[] => {
   return gameSessions.map((session) => {
-    const impulsivityScores = calculateSessionImpulsivityScore(
-      session.gameData
-    );
+    const attentivenessScore = calculateSessionAttentivenessScore(session.gameData);
+    const impulsivityScore = calculateSessionImpulsivityScore(session.gameData);
+    let hyperScore = calculateSessionHyperScore(session.gameData);
+    if (hyperScore > 0) {
+      hyperScore = (Math.min(session.energyScore + (session.energyScore * hyperScore), 1)/100);
+    } else {
+      hyperScore = (Math.max(session.energyScore + (session.energyScore * hyperScore), 0)/100);
+    }
 
-    // Calculate the attentiveness score for each session by aggregating scores from each game's emotions
-    const attentivenessScores = calculateSessionAttentivenessScore(
-      session.gameData
-    );
-
-    const validImpulsivityScores = impulsivityScores.filter(
-      (score) => !isNaN(score)
-    );
-
-    // Filter out NaN values from the attentivenessScores array
-    const validAttentivenessScores = attentivenessScores.filter(
-      (score) => !isNaN(score)
-    );
-
-    const impulsivityScoresSum = validImpulsivityScores.reduce(
-      (a, b) => a + b,
-      0
-    );
-
-    // Calculate the sum of valid attentiveness scores
-    const attentivenessScoresSum = validAttentivenessScores.reduce(
-      (a, b) => a + b,
-      0
-    );
-
-    // Calculate the average of valid attentiveness scores
-    const attentivenessScoresSumAvg =
-      attentivenessScoresSum / validAttentivenessScores.length || 0;
-    console.log("Attentiveness Scores Sum Avg 🤓", attentivenessScoresSumAvg);
-
-    const impulsivityScoresSumAvg =
-      impulsivityScoresSum / validImpulsivityScores.length || 0;
-    console.log("Impulsivity Scores Sum Avg 😡", impulsivityScoresSumAvg);
-
-    // Return the daily chart data
-    return {
+    // Prepare the daily chart data object
+    const dailyChartData: DailyChartData = {
       date: formatDate(session.time),
-      Hyperaktivität: session.energyScore / 100,
-      Aufmersamkeit: attentivenessScoresSumAvg.toFixed(2),
-      Impulsivität: impulsivityScoresSumAvg.toFixed(2),
+      Hyperaktivität: hyperScore.toFixed(2),
+      Aufmersamkeit: attentivenessScore.toFixed(2),
+      Impulsivität: impulsivityScore.toFixed(2),
       gamesPlayed: session.gameData.map((data) => data.game),
     };
+
+    return dailyChartData;
   });
 };
 
