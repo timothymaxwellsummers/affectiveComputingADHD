@@ -70,7 +70,11 @@ const VioletPointGame: React.FC = () => {
   };
 
   getPointGameScoreRatio = () => {
-    return hits === 0 ? hits : hits / 16;
+    if (!started) {
+      return -1; // Spiel wurde nicht gestartet --> -1 als Indikator
+    } else {
+      return hits === 0 ? hits : hits / 16; // es gibt 16 Punkte insgesamt
+    }
   };
 
   return (
