@@ -105,7 +105,8 @@ export const calculateSessionImpulsivityScore = (
 
 
 export const calculateSessionHyperScore = (
-  gameData: GameData[]
+  gameData: GameData[],
+  energyScore: number
 ): number => {
   let gameSpecificScoreTotal = 0;
   let VioletPointGamesTotal = 0;
@@ -124,15 +125,14 @@ export const calculateSessionHyperScore = (
 
   if (VioletPointGamesTotal > 0) {
     const averageGameSpecificScore = gameSpecificScoreTotal / VioletPointGamesTotal;
-    console.log("hyper", averageGameSpecificScore);
 
       if (averageGameSpecificScore === 1) {
-        averageHyperScore = -0.2;
+        averageHyperScore = (Math.max(energyScore + (energyScore * -0.2), 0)/100);
       } else if (averageGameSpecificScore > 0.8) {
-        averageHyperScore = -0.1;
+         averageHyperScore = (Math.max(energyScore + (energyScore * -0.1), 0)/100);
       }
       } else {
-        averageHyperScore = 0.1;
+        averageHyperScore = (Math.min(energyScore + (energyScore * 0.1), 1)/100);
       }
 
   return averageHyperScore;
@@ -145,12 +145,7 @@ export const generateDailyChartData = (
   return gameSessions.map((session) => {
     const attentivenessScore = calculateSessionAttentivenessScore(session.gameData);
     const impulsivityScore = calculateSessionImpulsivityScore(session.gameData);
-    let hyperScore = calculateSessionHyperScore(session.gameData);
-    if (hyperScore > 0) {
-      hyperScore = (Math.min(session.energyScore + (session.energyScore * hyperScore), 1)/100);
-    } else {
-      hyperScore = (Math.max(session.energyScore + (session.energyScore * hyperScore), 0)/100);
-    }
+    const hyperScore = calculateSessionHyperScore(session.gameData, session.energyScore);
 
     // Prepare the daily chart data object
     const dailyChartData: DailyChartData = {
