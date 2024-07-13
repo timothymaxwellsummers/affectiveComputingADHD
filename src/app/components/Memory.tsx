@@ -1,5 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { addSpecificScoreData } from '../services/localStorageService'; 
+
 
 interface Card {
   id: number;
@@ -22,6 +24,8 @@ const initialCards: Card[] = [
 const shuffleCards = (cards: Card[]) => {
   return cards.sort(() => Math.random() - 0.5);
 };
+
+export let getMemoryGameScoreRatio: () => number;
 
 const MemoryGame: React.FC = () => {
   const [cards, setCards] = useState<Card[]>(shuffleCards([...initialCards]));
@@ -76,6 +80,8 @@ const MemoryGame: React.FC = () => {
   useEffect(() => {
     if (score === initialCards.length / 2) {
       setFeedback(feedbackMessages.won);
+      const sessionId = ''; // Retrieve sessionId from context or props
+      // addSpecificScoreData(sessionId, 'MemoryGame');
     }
   }, [score, feedbackMessages]);
 
@@ -97,6 +103,10 @@ const MemoryGame: React.FC = () => {
     setFeedback(feedbackMessages.reset);
   };
 
+  getMemoryGameScoreRatio = () => {
+    console.log(`Calculating score ratio: score=${score}, wrongGuesses=${wrongGuesses}`);
+    return wrongGuesses === 0 ? score : score / wrongGuesses;
+  };
 
   return (
     <div className="p-3">

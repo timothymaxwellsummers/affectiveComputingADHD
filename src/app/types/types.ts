@@ -39,7 +39,12 @@ export interface GameSessionData {
 
 export interface GameData {
   game: Game;
+  scoreData: GameSpecificScore;
   emotions: Emotion[];
+}
+
+export interface GameSpecificScore {
+  gameSpecificScore : number;
 }
 
 export interface Emotion {

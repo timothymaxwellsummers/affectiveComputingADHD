@@ -1,4 +1,7 @@
 // localStorageService.ts
+import MemoryGame, { getMemoryGameScoreRatio } from '../components/Memory';
+import Puzzle from '../components/Puzzle';
+import VioletPointGame from '../components/VioletPointGame';
 import { GameSessionData, GameData, Emotion, Game, eventType } from '../types/types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -30,7 +33,12 @@ export const addGameData = (sessionId: string, game: Game) => {
   const sessions = getGameSessionsData();
   const session = sessions.find(session => session.sessionId === sessionId);
   if (session) {
-    session.gameData.push({ game, emotions: [] });
+    const newGameData: GameData = {
+      game,
+      scoreData: {gameSpecificScore: 5},
+      emotions: [],
+    };
+    session.gameData.push(newGameData);
     localStorage.setItem('gameSessions', JSON.stringify(sessions));
   }
 };
@@ -41,9 +49,29 @@ export const addEmotions = (sessionId: string, gameName: string, emotions: Emoti
     const session = sessions.find(session => session.sessionId === sessionId);
     if (session) {
       const gameData = session.gameData.find(data => data.game.name === gameName);
-      if (gameData) {
-        gameData.emotions = [...gameData.emotions, ...emotions];
         localStorage.setItem('gameSessions', JSON.stringify(sessions));
+    }
+  };
+
+  export const addSpecificScoreData = (sessionId: string, gameName: string) => {
+    const sessions = getGameSessionsData();
+    const session = sessions.find(session => session.sessionId === sessionId);
+    if (session) {
+      const gameData = session.gameData.find(data => data.game.name === gameName);
+      if (gameData) {
+        if (gameData.game.name === 'MemoryGame') { //(gameData.game.name === 'MemoryGame'))
+            const scoreRatio  = getMemoryGameScoreRatio();
+            console.log(`Score ratio calculated: ${scoreRatio}`);
+            gameData.scoreData = { gameSpecificScore: scoreRatio };
+            localStorage.setItem('gameSessions', JSON.stringify(sessions));
+        }
+        // if (gameData.game == VioletPointGame) {
+        //   gameData.scoreData = ....
+        // }
+        // if (gameData.game == Puzzle) {
+        //   gameData.scoreData = ....
+        // // }
+        // localStorage.setItem('gameSessions', JSON.stringify(sessions));
       }
     }
   };
