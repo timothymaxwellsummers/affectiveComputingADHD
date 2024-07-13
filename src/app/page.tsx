@@ -58,7 +58,7 @@ export default function Home() {
                 className="mt-4 p-4 bg-purple-800 text-white rounded"
                 onClick={closeModal}
               >
-                Submit my Energy Level
+                Energie-Level festgelegt
               </button>
             </div>
           </div>

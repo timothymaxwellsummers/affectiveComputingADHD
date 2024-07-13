@@ -115,17 +115,17 @@ const MemoryGame: React.FC = () => {
 
   return (
     <div className="p-3">
-      <h1 className="text-2xl text-[rgb(0,14,128)] font-bold mb-4">Memory Game</h1>
+      <h1 className="text-2xl text-[rgb(0,14,128)] font-bold mb-4">Memory</h1>
       <div className="bg-white rounded-xl shadow-xl p-4  text-[rgb(0,14,128)] mb-5 max-w-md text-center border text-lg">
           {feedback}
         </div>
       <h2 className="text-xl text-[rgb(0,14,128)] mb-4">Score: {score}</h2>
-      <h2 className="text-xl text-[rgb(0,14,128)] mb-4">Wrong Guesses: {wrongGuesses}</h2>
+      <h2 className="text-xl text-[rgb(0,14,128)] mb-4">Falsche Versuche: {wrongGuesses}</h2>
       <button 
         onClick={resetGame} 
         className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
       >
-        Reset Game
+        Spiel zurücksetzen
       </button>
 
 
