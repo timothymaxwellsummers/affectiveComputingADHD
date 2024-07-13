@@ -104,8 +104,7 @@ const MemoryGame: React.FC = () => {
   };
 
   getMemoryGameScoreRatio = () => {
-    console.log(`Calculating score ratio: score=${score}, wrongGuesses=${wrongGuesses}`);
-    return wrongGuesses === 0 ? score : score / wrongGuesses;
+    return (wrongGuesses === 0) ? ((score < 4) ? 0 : score) : score / wrongGuesses;
   };
 
   return (

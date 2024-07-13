@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import PuzzlePiece from './PuzzlePiece';
 import './Puzzle.css';
 
+export let getPuzzleScoreRatio: () => number;
+
 const Puzzle: React.FC = () => {
   const initialPositions = Array.from({ length: 16 }, (_, i) => i);
 
@@ -52,6 +54,10 @@ const Puzzle: React.FC = () => {
     } else {
       setIncorrectSwipes(incorrectMoves + 1);
     }
+  };
+
+  getPuzzleScoreRatio = () => {
+    return incorrectMoves / 32; 
   };
 
   return (

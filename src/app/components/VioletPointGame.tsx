@@ -6,6 +6,8 @@ interface Point {
   y: number;
 }
 
+export let getPointGameScoreRatio: () => number;
+
 const VioletPointGame: React.FC = () => {
   const [points, setPoints] = useState<Point[]>([]);
   const [hits, setHits] = useState<number>(0);
@@ -65,6 +67,10 @@ const VioletPointGame: React.FC = () => {
     setStarted(true);
     setPaused(false);
     setGameOver(false);
+  };
+
+  getPointGameScoreRatio = () => {
+    return hits === 0 ? hits : hits / 16;
   };
 
   return (

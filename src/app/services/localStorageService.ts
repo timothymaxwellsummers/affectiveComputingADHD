@@ -1,7 +1,7 @@
 // localStorageService.ts
-import MemoryGame, { getMemoryGameScoreRatio } from '../components/Memory';
-import Puzzle from '../components/Puzzle';
-import VioletPointGame from '../components/VioletPointGame';
+import { getMemoryGameScoreRatio } from '../components/Memory';
+import { getPuzzleScoreRatio } from '../components/Puzzle';
+import { getPointGameScoreRatio } from '../components/VioletPointGame';
 import { GameSessionData, GameData, Emotion, Game, eventType } from '../types/types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -35,7 +35,7 @@ export const addGameData = (sessionId: string, game: Game) => {
   if (session) {
     const newGameData: GameData = {
       game,
-      scoreData: {gameSpecificScore: 5},
+      scoreData: {gameSpecificScore: 0},
       emotions: [],
     };
     session.gameData.push(newGameData);
@@ -57,21 +57,22 @@ export const addEmotions = (sessionId: string, gameName: string, emotions: Emoti
     const sessions = getGameSessionsData();
     const session = sessions.find(session => session.sessionId === sessionId);
     if (session) {
-      const gameData = session.gameData.find(data => data.game.name === gameName);
+      const gameData = session.gameData[session.gameData.length - 1];
+
       if (gameData) {
-        if (gameData.game.name === 'MemoryGame') { //(gameData.game.name === 'MemoryGame'))
-            const scoreRatio  = getMemoryGameScoreRatio();
-            console.log(`Score ratio calculated: ${scoreRatio}`);
+        if (gameData.game.name === 'Memory Game') {
+            const scoreRatio  = getMemoryGameScoreRatio(); // correct over incorrect
             gameData.scoreData = { gameSpecificScore: scoreRatio };
-            localStorage.setItem('gameSessions', JSON.stringify(sessions));
         }
-        // if (gameData.game == VioletPointGame) {
-        //   gameData.scoreData = ....
-        // }
-        // if (gameData.game == Puzzle) {
-        //   gameData.scoreData = ....
-        // // }
-        // localStorage.setItem('gameSessions', JSON.stringify(sessions));
+        if (gameData.game.name === 'Puzzle') {
+          const scoreRatio  = getPuzzleScoreRatio(); // incorrect over 32 (total number of piecesx2)
+          gameData.scoreData = { gameSpecificScore: scoreRatio };
+        }
+        if (gameData.game.name === 'VioletPointGame') {
+          const scoreRatio  = getPointGameScoreRatio();   // correct over 16 (total number)
+          gameData.scoreData = { gameSpecificScore: scoreRatio };
+        }
+        localStorage.setItem('gameSessions', JSON.stringify(sessions));
       }
     }
   };
