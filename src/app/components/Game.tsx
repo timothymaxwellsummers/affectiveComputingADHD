@@ -16,7 +16,7 @@ interface GameProps {
 }
 
 const Game: React.FC<GameProps> = ({ sessionData, setGameEmotions, gameEmotions }) => {
-  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [selectedGame, setSelectedGame] = useState<Game>({ name: "Memory Game"})
 
   useEffect(() => {
     if (selectedGame) {
