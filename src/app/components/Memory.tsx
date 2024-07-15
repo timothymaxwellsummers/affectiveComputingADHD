@@ -1,5 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { addSpecificScoreData } from '../services/localStorageService'; 
+
 
 interface Card {
   id: number;
@@ -22,6 +24,8 @@ const initialCards: Card[] = [
 const shuffleCards = (cards: Card[]) => {
   return cards.sort(() => Math.random() - 0.5);
 };
+
+export let getMemoryGameScoreRatio: () => number;
 
 const MemoryGame: React.FC = () => {
   const [cards, setCards] = useState<Card[]>(shuffleCards([...initialCards]));
@@ -76,6 +80,8 @@ const MemoryGame: React.FC = () => {
   useEffect(() => {
     if (score === initialCards.length / 2) {
       setFeedback(feedbackMessages.won);
+      const sessionId = ''; // Retrieve sessionId from context or props
+      // addSpecificScoreData(sessionId, 'MemoryGame');
     }
   }, [score, feedbackMessages]);
 
@@ -97,20 +103,29 @@ const MemoryGame: React.FC = () => {
     setFeedback(feedbackMessages.reset);
   };
 
+  getMemoryGameScoreRatio = () => {
+    if (score === 0 && wrongGuesses === 0) {
+      return -1; // Wenn sowohl score als auch wrongGuesses null sind --> -1 als Indikator
+    } else if (score < 4) {
+      return 3; // Wenn der score nicht 4 ist: nicht zuende gespielt
+    } else {
+      return score === 0 ? 3 : wrongGuesses / score;
+    }
+  };
 
   return (
     <div className="p-3">
-      <h1 className="text-2xl text-[rgb(0,14,128)] font-bold mb-4">Memory Game</h1>
+      <h1 className="text-2xl text-[rgb(0,14,128)] font-bold mb-4">Memory</h1>
       <div className="bg-white rounded-xl shadow-xl p-4  text-[rgb(0,14,128)] mb-5 max-w-md text-center border text-lg">
           {feedback}
         </div>
       <h2 className="text-xl text-[rgb(0,14,128)] mb-4">Score: {score}</h2>
-      <h2 className="text-xl text-[rgb(0,14,128)] mb-4">Wrong Guesses: {wrongGuesses}</h2>
+      <h2 className="text-xl text-[rgb(0,14,128)] mb-4">Falsche Versuche: {wrongGuesses}</h2>
       <button 
         onClick={resetGame} 
         className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
       >
-        Reset Game
+        Spiel zurücksetzen
       </button>
 
 

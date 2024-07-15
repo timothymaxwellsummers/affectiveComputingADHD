@@ -53,19 +53,19 @@ const EnergyBarometer: React.FC<EnergyBarometerProps> = ({ sessionData }) => {
     (_, index) => {
       if (index === 0) {
         return {
-          text: "Low",
+          text: "niedrig",
           position: CustomSegmentLabelPosition.Outside,
           color: "#666",
         };
       } else if (index === 50) {
         return {
-          text: "Medium",
+          text: "mittel",
           position: CustomSegmentLabelPosition.Outside,
           color: "#666",
         };
       } else if (index === 99) {
         return {
-          text: "High",
+          text: "hoch",
           position: CustomSegmentLabelPosition.Outside,
           color: "#666",
         };
@@ -125,14 +125,14 @@ const EnergyBarometer: React.FC<EnergyBarometerProps> = ({ sessionData }) => {
 
       <div style={{ marginBottom: "0px", fontSize: "1.2em" }}>
         <span>
-          Energy Level:{" "}
+          <b>Energie-Level:</b>{" "}
           {energyLevel !== null
             ? energyLevel
-            : "Please select your Energy Level by clicking on the barometer"}
+            : "Bitte wähle din Energie-Level, indem du auf das Barometer klickst"}
         </span>
       </div>
       <div style={{ marginBottom: "5px", fontSize: "1.2em" }}>
-        <span>Average Energy Level: {calculateAverage().toFixed(2)}</span>
+        <span><b>⌀ Energie-Level:</b> {calculateAverage().toFixed(2)}</span>
       </div>
     </div>
   );

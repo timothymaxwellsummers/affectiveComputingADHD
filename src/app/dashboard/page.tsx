@@ -19,17 +19,17 @@ const DashboardPage: React.FC = () => {
             <div className="pt-4">
               <DailyChart />
             </div>
-            <h1 className="text-xl font-semibold pt-4">Trend:</h1>
+            {/* <h1 className="text-xl font-semibold pt-4">Trend:</h1>
             <p className="text-gray-700">
               Die Scores Ihres Kindes und damit die ADHS Symptome werden immer
               geringer. Herzlichen Glückwunsch, Ihr Kind macht beeindruckende
               Fortschritte.
-            </p>
+            </p> */}
           </div>
         </div>
         <div className="flex-1 flex flex-col space-y-6 rounded-xl shadow-xl bg-[rgb(255,255,255)]">
           <div className="flex-col space-y-6 p-6 ">
-            <h1 className="text-2xl font-bold-pt-4">Letztes Tracking</h1>
+            <h1 className="text-2xl font-bold pt-4">Letzte Session</h1>
             <LastSessionDisplay />
           </div>
         </div>

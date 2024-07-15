@@ -6,6 +6,8 @@ interface Point {
   y: number;
 }
 
+export let getPointGameScoreRatio: () => number;
+
 const VioletPointGame: React.FC = () => {
   const [points, setPoints] = useState<Point[]>([]);
   const [hits, setHits] = useState<number>(0);
@@ -25,6 +27,7 @@ const VioletPointGame: React.FC = () => {
         setIntervalTime((prev) => prev - 100);
       } else {
         setGameOver(true);
+        setPoints([]);
       }
     }, intervalTime);
 
@@ -67,10 +70,18 @@ const VioletPointGame: React.FC = () => {
     setGameOver(false);
   };
 
+  getPointGameScoreRatio = () => {
+    if (!started) {
+      return -1; // Spiel wurde nicht gestartet --> -1 als Indikator
+    } else {
+      return hits === 0 ? hits : hits / 16; // es gibt 16 Punkte insgesamt
+    }
+  };
+
   return (
     <div className="flex flex-col items-center pt-4">
-      <h1 className="text-2xl font-bold text-[rgb(0,0,128)] mb-4">Violet Point Game</h1>
-      <p className="text-lg font-bold text-[rgb(0,0,128)] mb-4">Hits: {hits}</p>
+      <h1 className="text-2xl font-bold text-[rgb(0,0,128)] mb-4">Violet Points Game</h1>
+      <p className="text-lg font-bold text-[rgb(0,0,128)] mb-4">Treffer: {hits}</p>
       <div
         ref={fieldRef}
         className="relative w-80 h-96 rounded-xl shadow-xl bg-[rgb(255,255,255)] "
@@ -84,7 +95,7 @@ const VioletPointGame: React.FC = () => {
           ></div>
         ))}
       </div>
-      {gameOver && <p className="text-lg text-red-500">Game Over! You hit {hits} points.</p>}
+      {gameOver && <p className="text-lg text-red-500">Spiel zuende! Du hast {hits} von 16 Treffern.</p>}
       <div className="space-x-2 pt-3">
         <button
           onClick={handleStart}
@@ -97,14 +108,14 @@ const VioletPointGame: React.FC = () => {
           onClick={handleReset}
           className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
         >
-          Reset
+          Zurücksetzen
         </button>
         <button
           onClick={handlePause}
           disabled={!started}
           className="px-4 py-2 bg-violet-500 text-white rounded disabled:bg-yellow-500"
         >
-          {paused ? 'Resume' : 'Pause'}
+          {paused ? 'Fortsetzen' : 'Pause'}
         </button>
       </div>
     </div>

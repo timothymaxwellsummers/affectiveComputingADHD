@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import PuzzlePiece from './PuzzlePiece';
 import './Puzzle.css';
 
+export let getPuzzleScoreRatio: () => number;
+
 const Puzzle: React.FC = () => {
   const initialPositions = Array.from({ length: 16 }, (_, i) => i);
 
@@ -10,11 +12,20 @@ const Puzzle: React.FC = () => {
   const [incorrectMoves, setIncorrectSwipes] = useState<number>(0);
   const [moveFrequency, setRememberFrequency] = useState<number[]>([]);
   const lastMoveTime = useRef<number | null>(null);
+  const [puzzleSolved, setPuzzleSolved] = useState<boolean>(false);
 
   useEffect(() => {
     const shuffledPositions = shuffleArray(initialPositions);
     setPos(shuffledPositions);
   }, []);
+
+  useEffect(() => {
+    if (isSolved(positions)) {
+      setPuzzleSolved(true);
+    } else {
+      setPuzzleSolved(false);
+    }
+  }, [positions]);
 
   /*useEffect(() => {
     if (isSolved(positions)) {
@@ -54,6 +65,21 @@ const Puzzle: React.FC = () => {
     }
   };
 
+  getPuzzleScoreRatio = () => {
+    if (puzzleSolved) {
+      return incorrectMoves / 24; //wenn es gelöst ist, pro Teil 2 Versuche um es richtig anzuordnen
+    }
+    else {
+      if (incorrectMoves === 0) { //wenn nicht gelöst: hat die Person überhaupt gespielt? wenn Nein, -1 als Indikator, dass nicht gespielt
+        return -1;
+      } else {
+      return 3; //falls nicht gelöst aber gespielt: 0 --> deutet sehr auf Symptom hin, dass fertig spielen nicht geschafft.
+    }
+  }
+
+    
+  };
+
   return (
     <div className="p-3">
       <h1 className="text-2xl text-[rgb(0,14,128)] font-bold mb-4 pb-3">Puzzle!</h1>
@@ -68,16 +94,16 @@ const Puzzle: React.FC = () => {
         ))}
       </div>
       <div className="stats">
-        <p>Incorrect Moves: {incorrectMoves}</p>
-        <p>Move Frequency: {moveFrequency.map((freq, i) => (
+        <p>Falsche Versuche: {incorrectMoves}</p>
+        {/* <p>Move Frequency: {moveFrequency.map((freq, i) => (
           <span key={i}>{freq.toFixed(2)}s {i < moveFrequency.length - 1 ? ', ' : ''}</span>
-        ))}</p>
+        ))}</p> */}
       </div>
       <button 
         onClick={resetPuzzle} 
         className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
       >
-        Reset Game
+        Spiel zurücksetzen
       </button> 
     </div>
     
