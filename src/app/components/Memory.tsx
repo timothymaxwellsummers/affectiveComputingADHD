@@ -33,7 +33,7 @@ const MemoryGame: React.FC = () => {
 
 
   useEffect(() => {
-    fetch('/FeedbackTexts.json')
+    fetch('./FeedBackTexts.json')
       .then(response => response.json())
       .then(data => setFeedbackMessages(data));
   }, []);
