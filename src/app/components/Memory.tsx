@@ -32,12 +32,12 @@ const MemoryGame: React.FC = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [score, setScore] = useState<number>(0);
   const [wrongGuesses, setWrongGuesses] = useState<number>(0);
-  const [feedback, setFeedback] = useState<string>('Find the first match!');
+  const [feedback, setFeedback] = useState<string>('Finde ein gleich aussehendes Tier-Paar!');
   const [feedbackMessages, setFeedbackMessages] = useState<any>({});
 
 
   useEffect(() => {
-    fetch('/FeedbackTexts.json')
+    fetch('/FeedbackText.json')
       .then(response => response.json())
       .then(data => setFeedbackMessages(data));
   }, []);
@@ -80,8 +80,7 @@ const MemoryGame: React.FC = () => {
   useEffect(() => {
     if (score === initialCards.length / 2) {
       setFeedback(feedbackMessages.won);
-      const sessionId = ''; // Retrieve sessionId from context or props
-      // addSpecificScoreData(sessionId, 'MemoryGame');
+      const sessionId = ''; 
     }
   }, [score, feedbackMessages]);
 
