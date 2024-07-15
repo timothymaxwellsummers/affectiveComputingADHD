@@ -94,7 +94,7 @@ const Puzzle: React.FC = () => {
         ))}
       </div>
       <div className="stats">
-        <p>Falsche Versuche: {incorrectMoves}</p>
+        {/* <p>Falsche Versuche: {incorrectMoves}</p> */}
         {/* <p>Move Frequency: {moveFrequency.map((freq, i) => (
           <span key={i}>{freq.toFixed(2)}s {i < moveFrequency.length - 1 ? ', ' : ''}</span>
         ))}</p> */}

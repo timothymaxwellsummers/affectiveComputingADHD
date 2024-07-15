@@ -95,7 +95,7 @@ const VioletPointGame: React.FC = () => {
           ></div>
         ))}
       </div>
-      {gameOver && <p className="text-lg text-red-500">Spiel zuende! Du hast {hits} von 16 Treffern.</p>}
+      {/*gameOver && <p className="text-lg text-red-500">Spiel zuende! Du hast {hits} von 16 Treffern.</p>*/}
       <div className="space-x-2 pt-3">
         <button
           onClick={handleStart}

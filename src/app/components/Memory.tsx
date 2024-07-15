@@ -80,9 +80,12 @@ const MemoryGame: React.FC = () => {
   useEffect(() => {
     if (score === initialCards.length / 2) {
       setFeedback(feedbackMessages.won);
-      const sessionId = ''; 
+      const sessionId = ''; // Retrieve sessionId from context or props
+      // addSpecificScoreData(sessionId, 'MemoryGame');
+      
     }
   }, [score, feedbackMessages]);
+
 
   const handleCardClick = (index: number) => {
     if (flippedCards.length < 2 && !cards[index].isFlipped && !cards[index].isMatched) {
@@ -115,11 +118,12 @@ const MemoryGame: React.FC = () => {
   return (
     <div className="p-3">
       <h1 className="text-2xl text-[rgb(0,14,128)] font-bold mb-4">Memory</h1>
-      <div className="bg-white rounded-xl shadow-xl p-4  text-[rgb(0,14,128)] mb-5 max-w-md text-center border text-lg">
+      <div className="bg-white h-35 rounded-xl shadow-xl p-4 text-[rgb(0,14,128)] mb-5 max-w-md text-center border text-lg items-center justify-center">
           {feedback}
         </div>
       <h2 className="text-xl text-[rgb(0,14,128)] mb-4">Score: {score}</h2>
-      <h2 className="text-xl text-[rgb(0,14,128)] mb-4">Falsche Versuche: {wrongGuesses}</h2>
+      {/*<h2 className="text-xl text-[rgb(0,14,128)] mb-4">Falsche Versuche: {wrongGuesses}</h2>*/}
+      
       <button 
         onClick={resetGame} 
         className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
