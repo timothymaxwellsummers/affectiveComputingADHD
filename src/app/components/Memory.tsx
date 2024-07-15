@@ -107,9 +107,9 @@ const MemoryGame: React.FC = () => {
     if (score === 0 && wrongGuesses === 0) {
       return -1; // Wenn sowohl score als auch wrongGuesses null sind --> -1 als Indikator
     } else if (score < 4) {
-      return 0; // Wenn der score nicht 4 ist: nicht zuende gespielt
+      return 3; // Wenn der score nicht 4 ist: nicht zuende gespielt
     } else {
-      return score === 0 ? 0 : wrongGuesses / score;
+      return score === 0 ? 3 : wrongGuesses / score;
     }
   };
 

@@ -48,19 +48,19 @@ const LastSessionDisplay: React.FC<LastSessionDisplayProps> = (props) => {
           <div className="">
             <h1 className="text-xl font-semibold pt-8">Hyperaktivität:</h1>
             <p className="text-gray-700">
-            {calculateSessionHyperScore(lastSession.gameData, lastSession.energyScore) * 100} %
+            {(calculateSessionHyperScore(lastSession.gameData, lastSession.energyScore) * 100).toFixed(2)} %
             </p>
           </div>
           <div>
-            <h1 className="text-xl font-semibold pt-10">Aufmerksamkeit:</h1>
+            <h1 className="text-xl font-semibold pt-10">Unaufmerksamkeit:</h1>
             <p className="text-gray-700">
-              {calculateSessionAttentivenessScore(lastSession.gameData)*100} %
+              {(100-calculateSessionAttentivenessScore(lastSession.gameData)*100).toFixed(2)} %
             </p>
           </div>
           <div>
             <h1 className="text-xl font-semibold pt-10">Impulsivität:</h1>
             <p className="text-gray-700">
-              {calculateSessionImpulsivityScore(lastSession.gameData)*100} %
+              {(calculateSessionImpulsivityScore(lastSession.gameData)*100).toFixed(2)} %
             </p>
           </div>
          {/*   <div>
