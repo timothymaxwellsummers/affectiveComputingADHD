@@ -64,6 +64,7 @@ export const calculateSessionAttentivenessScore = (
           0
         );
       } else if (averageGameSpecificScore < 1) {
+        averageAttentivenessScore = Math.max(attentivenessScoreTotal / gamesTotal, 0.1)
         averageAttentivenessScore = Math.min(
           averageAttentivenessScore + averageAttentivenessScore * 0.2,
           1
