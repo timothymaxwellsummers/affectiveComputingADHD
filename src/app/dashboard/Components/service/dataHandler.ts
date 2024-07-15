@@ -60,12 +60,12 @@ export const calculateSessionAttentivenessScore = (
 
       if (averageGameSpecificScore > 1) {
         averageAttentivenessScore = Math.max(
-          averageAttentivenessScore + averageAttentivenessScore * -0.1,
+          averageAttentivenessScore + averageAttentivenessScore * -0.2,
           0
         );
       } else if (averageGameSpecificScore < 1) {
         averageAttentivenessScore = Math.min(
-          averageAttentivenessScore + averageAttentivenessScore * 0.1,
+          averageAttentivenessScore + averageAttentivenessScore * 0.2,
           1
         );
       }
@@ -103,9 +103,9 @@ export const calculateSessionImpulsivityScore = (
     const averageGameSpecificScore = gameSpecificScoreTotal / puzzleGamesTotal;
 
     if (averageGameSpecificScore > 1) {
-      averageImpulsivityScore = Math.max((impulsivityScoreTotal / gamesTotal), 0.5);
+      averageImpulsivityScore = Math.max((impulsivityScoreTotal / gamesTotal), 0.3);
       averageImpulsivityScore = Math.min(
-        averageImpulsivityScore + averageImpulsivityScore * 0.3,
+        averageImpulsivityScore + averageImpulsivityScore * 0.5,
         1
       );
     } else if (averageGameSpecificScore < 1) {
@@ -141,15 +141,17 @@ export const calculateSessionHyperScore = (
   if (VioletPointGamesTotal > 0) {
     const averageGameSpecificScore =
       gameSpecificScoreTotal / VioletPointGamesTotal;
+      
 
     if (averageGameSpecificScore === 1) {
       averageHyperScore = Math.max(energyScore + energyScore * -0.2, 0) / 100;
-    } else if (averageGameSpecificScore > 0.8) {
-      averageHyperScore = Math.max(energyScore + energyScore * -0.1, 0) / 100;
+    } else if (averageGameSpecificScore > 0.7) {
+      averageHyperScore = Math.max(energyScore + energyScore * -0.2, 0) / 100;
     }
-  } else {
-    averageHyperScore = Math.min(energyScore + energyScore * 0.1, 100) / 100;
-  }
+    else {
+      averageHyperScore = Math.min(energyScore + energyScore * 0.2, 100) / 100;
+    }
+}
 
   return averageHyperScore;
 };
@@ -166,7 +168,7 @@ export const generateDailyChartData = (
       session.gameData,
       session.energyScore
     );
-    console.log("data", hyperScore, attentivenessScore, impulsivityScore);
+    // console.log("data", hyperScore, attentivenessScore, impulsivityScore);
 
     // Prepare the daily chart data object
     const dailyChartData: DailyChartData = {
