@@ -27,6 +27,7 @@ const VioletPointGame: React.FC = () => {
         setIntervalTime((prev) => prev - 100);
       } else {
         setGameOver(true);
+        setPoints([]);
       }
     }, intervalTime);
 

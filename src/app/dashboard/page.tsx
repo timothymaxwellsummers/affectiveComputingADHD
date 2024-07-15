@@ -29,7 +29,7 @@ const DashboardPage: React.FC = () => {
         </div>
         <div className="flex-1 flex flex-col space-y-6 rounded-xl shadow-xl bg-[rgb(255,255,255)]">
           <div className="flex-col space-y-6 p-6 ">
-            <h1 className="text-2xl font-bold-pt-4">Letzte Session</h1>
+            <h1 className="text-2xl font-bold pt-4">Letzte Session</h1>
             <LastSessionDisplay />
           </div>
         </div>
