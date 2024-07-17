@@ -38,9 +38,12 @@ export default function Home() {
   return (
     <main className="">
       <div className="">
-        <h1 className="text-2xl font-bold mt-2 mb-4 ml-4 text-[rgb(0,14,128)]">
-          Affective ADHD
+        <div className="flex items-center mt-2 mb-4 ml-4">
+        <h1 className="text-2xl font-bold mt-2.5 mb-4 ml-4 text-[rgb(0,14,128)]">
+          Focus Play
         </h1>
+        <img src="/LogoFocusPlay.svg" alt="Logo in form on an eye" className="absolute left-36 top-0 w-19 h-16" />
+        </div>
         <Game
           sessionData={sessionData}
           setGameEmotions={setGameEmotions}

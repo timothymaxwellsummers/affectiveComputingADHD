@@ -21,6 +21,7 @@ const VioletPointGame: React.FC = () => {
   useEffect(() => {
     if (gameOver || paused || !started) return;
 
+    // Schrittweise verkürzt sich das Zeitintervall und fügt Üunkte hinzu
     intervalRef.current = setInterval(() => {
       addPoint();
       if (intervalTime > 500) {
@@ -36,19 +37,23 @@ const VioletPointGame: React.FC = () => {
     };
   }, [intervalTime, gameOver, paused, started]);
 
+  //Points
   const addPoint = () => {
     if (fieldRef.current) {
+      //Feldgröße  
       const fieldWidth = fieldRef.current.offsetWidth;
       const fieldHeight = fieldRef.current.offsetHeight;
-      const x = Math.random() * (fieldWidth - 20); // Adjusting for point size
+
+      // ZUFÄLLIGES X/Y aber wenigstens ein paar Pixel vom Rand entfernt
+      const x = Math.random() * (fieldWidth - 20);
       const y = Math.random() * (fieldHeight - 20);
       setPoints((prev) => [...prev, { x, y }]);
     }
   };
 
   const handlePointClick = (index: number) => {
-    setHits((prev) => prev + 1);
-    setPoints((prev) => prev.filter((_, i) => i !== index));
+    setHits((prev) => prev + 1); // Score hoch 
+    setPoints((prev) => prev.filter((_, i) => i !== index));//Punkt weg
   };
 
   const handleReset = () => {

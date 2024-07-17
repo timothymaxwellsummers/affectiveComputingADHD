@@ -32,6 +32,7 @@ const Puzzle: React.FC = () => {
       alert("Congratulations! You solved the puzzle!");
     }
   }, [positions]);*/
+
   useEffect(() => {
     resetPuzzle();
   }, []);
@@ -45,15 +46,17 @@ const Puzzle: React.FC = () => {
   };
 
   const handlePieceClick = (index: number) => {
-    const emptyIndex = positions.indexOf(15);
+    //15 ist immer der Index des leeren Feldes
+    const emptyIndex = positions.indexOf(15); 
     const canMove = checkIfMovePossible(index, emptyIndex);
 
     if (canMove) {
       const newPositions = [...positions];
+      //Puzzelteile werden getauscht
       [newPositions[index], newPositions[emptyIndex]] = [newPositions[emptyIndex], newPositions[index]];
       setPos(newPositions);
 
-
+      // Trackt Bewegungs-Frequenz für Impulsivitätsscore (für diesen Release nicht verwendet)
       const now = Date.now();
       if (lastMoveTime.current !== null) {
         const timeDiff = (now - lastMoveTime.current) / 1000;
@@ -109,6 +112,7 @@ const Puzzle: React.FC = () => {
     
   );
 };
+
 
 const shuffleArray = (array: number[]): number[] => {
   const newArray = array.slice();
