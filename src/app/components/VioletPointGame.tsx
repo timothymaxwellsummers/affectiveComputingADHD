@@ -21,7 +21,7 @@ const VioletPointGame: React.FC = () => {
   useEffect(() => {
     if (gameOver || paused || !started) return;
 
-    // Schrittweise verkürzt sich das Zeitintervall und fügt Üunkte hinzu
+    // Schrittweise verkürzt sich das Zeitintervall und fügt Punkte hinzu
     intervalRef.current = setInterval(() => {
       addPoint();
       if (intervalTime > 500) {
