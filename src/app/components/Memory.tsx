@@ -44,11 +44,12 @@ const MemoryGame: React.FC = () => {
 
 
   useEffect(() => {
+    // 2 geflippt? Speichere Index 
     if (flippedCards.length === 2) {
       const [firstIndex, secondIndex] = flippedCards;
       const firstCard = cards[firstIndex];
       const secondCard = cards[secondIndex];
-
+      //Bilder gleich? 
       if (firstCard.image === secondCard.image) {
         const newCards = cards.map((card, index) =>
           index === firstIndex || index === secondIndex
@@ -57,12 +58,15 @@ const MemoryGame: React.FC = () => {
         );
         setCards(newCards);
         setScore(score + 1);
+        // pos Feedback senden
         setFeedback(feedbackMessages.match);
         
 
       } else {
+        //Wenn nicht dann sende neg Feedback
         setFeedback(feedbackMessages.noMatch);
         setWrongGuesses(wrongGuesses + 1);
+        // Timeout und Karten zu
         setTimeout(() => {
           const newCards = cards.map((card, index) =>
             index === firstIndex || index === secondIndex
@@ -78,6 +82,7 @@ const MemoryGame: React.FC = () => {
   }, [flippedCards, cards, score, wrongGuesses,feedbackMessages]);
 
   useEffect(() => {
+    // Geschafft wenn alle Paare, also alle/2 aufgedeckt
     if (score === initialCards.length / 2) {
       setFeedback(feedbackMessages.won);
       const sessionId = ''; 
@@ -85,8 +90,10 @@ const MemoryGame: React.FC = () => {
   }, [score, feedbackMessages]);
 
   const handleCardClick = (index: number) => {
+      // Geklickte Karten sollten kleiner als 3 sein, noch nicht geflippt sein 
     if (flippedCards.length < 2 && !cards[index].isFlipped && !cards[index].isMatched) {
       const newCards = cards.map((card, i) =>
+      // Dann flippe und merke es 
         i === index ? { ...card, isFlipped: true } : card
       );
       setCards(newCards);

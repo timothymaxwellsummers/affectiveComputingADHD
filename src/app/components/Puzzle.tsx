@@ -36,6 +36,7 @@ const Puzzle: React.FC = () => {
     resetPuzzle();
   }, []);
 
+  //Puzzle reset
   const resetPuzzle = () => {
     const shuffledPositions = shuffleArray(initialPositions);
     setPos(shuffledPositions);
@@ -45,15 +46,17 @@ const Puzzle: React.FC = () => {
   };
 
   const handlePieceClick = (index: number) => {
+    //Empty immer die 15
     const emptyIndex = positions.indexOf(15);
     const canMove = checkIfMovePossible(index, emptyIndex);
 
     if (canMove) {
       const newPositions = [...positions];
+      //Welchsel Teile
       [newPositions[index], newPositions[emptyIndex]] = [newPositions[emptyIndex], newPositions[index]];
       setPos(newPositions);
 
-
+      // Tracke die Zeit, für weitere Impulsivitätsscore berechnungen über die Handlungszeit inder Zukunft
       const now = Date.now();
       if (lastMoveTime.current !== null) {
         const timeDiff = (now - lastMoveTime.current) / 1000;
@@ -110,6 +113,7 @@ const Puzzle: React.FC = () => {
   );
 };
 
+//Shuffel Funktion
 const shuffleArray = (array: number[]): number[] => {
   const newArray = array.slice();
   for (let i = newArray.length - 1; i > 0; i--) {
@@ -119,6 +123,7 @@ const shuffleArray = (array: number[]): number[] => {
   return newArray;
 };
 
+// Checke anliegende Puzzleteile
 const checkIfMovePossible = (index: number, emptyIndex: number): boolean => {
   const row = Math.floor(index / 4);
   const col = index % 4;
@@ -129,6 +134,7 @@ const checkIfMovePossible = (index: number, emptyIndex: number): boolean => {
          (col === emptyCol && Math.abs(row - emptyRow) === 1);
 };
 
+// Alle an der richtigen Stelle?
 const isSolved = (positions: number[]): boolean => {
   for (let i = 0; i < positions.length - 1; i++) {
     if (positions[i] !== i) return false;
