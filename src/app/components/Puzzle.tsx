@@ -70,7 +70,7 @@ const Puzzle: React.FC = () => {
 
   getPuzzleScoreRatio = () => {
     if (puzzleSolved) {
-      return incorrectMoves / 24; //wenn es gelöst ist, pro Teil 2 Versuche um es richtig anzuordnen
+      return incorrectMoves / 5; //wenn es gelöst ist, pro Teil 2 Versuche um es richtig anzuordnen
     }
     else {
       if (incorrectMoves === 0) { //wenn nicht gelöst: hat die Person überhaupt gespielt? wenn Nein, -1 als Indikator, dass nicht gespielt

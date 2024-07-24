@@ -1,4 +1,3 @@
-// localStorageService.ts
 import { getMemoryGameScoreRatio } from "../components/Memory";
 import { getPuzzleScoreRatio } from "../components/Puzzle";
 import { getPointGameScoreRatio } from "../components/VioletPointGame";

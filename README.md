@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FocusPlay: Spielbasierte Therapieansätze für Kinder mit ADHS und Monitoring für Eltern
 
-## Getting Started
+FocusPlay ist eine innovative Plattform, die spielbasierte Therapieansätze für Kinder mit Aufmerksamkeitsdefizit-Hyperaktivitätsstörung (ADHS) bietet und Eltern eine umfassende Überwachung ermöglicht. Dieses Projekt verwendet Gesichtserkennungstechnologie, um das emotionale und aufmerksamkeitsspezifische Verhalten der Kinder zu analysieren.
 
-First, run the development server:
+## Installation
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Um das Projekt lokal auszuführen, folgen Sie bitte diesen Schritten:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **Repository klonen**: 
+   ```bash
+   git clone url
+   ```
+2. **Dependencies installieren**:
+   ```bash
+   npm install
+   ```
+3. **Projekt starten**:
+   ```bash
+   npm run dev
+   ```
+   Das Projekt ist nun unter `http://localhost:3000` erreichbar.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. **Kamerazugriff erlauben**: Für die Gesichtserkennung muss der Zugriff auf die Kamera erlaubt werden.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+5. **Elterndashboard aufrufen**: Navigieren Sie manuell zu `/dashboard`, um das Elterndashboard aufzurufen.
 
-## Learn More
+## Projektstruktur
 
-To learn more about Next.js, take a look at the following resources:
+Die Projektstruktur ist wie folgt aufgebaut:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **public**: Enthält Modelle und entsprechende Gewichte, die für die Gesichtserkennung benötigt werden.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **src**: Hauptverzeichnis des Projekts, das den gesamten Quellcode enthält.
+  - **page.tsx**: Die Root-Datei der Anwendung.
+  - **GameComponent**: Enthält die spielbasierten Therapieansätze.
+  - **DashboardComponent**: Verantwortlich für das Tracking von Aufmerksamkeit und Emotionen, wird jedoch visuell nicht angezeigt.
+  - **services**: Beinhaltet den `localStorageService.ts`, der für das Speichern der Daten zuständig ist.
 
-## Deploy on Vercel
+- **dashboard**: Enthält alle Komponenten des Elterndashboards.
+  - **page.tsx**: Root-Komponente des Dashboards.
+  - **services/dataHandler.ts**: Verantwortlich für die Auswertung der gespeicherten Daten.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Verwendung
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+FocusPlay zielt darauf ab, Kindern durch spielbasierte Ansätze zu helfen, ihre Konzentration zu verbessern und ihre Emotionen zu regulieren. Eltern können über das Dashboard detaillierte Berichte und Analysen einsehen, um den Fortschritt ihrer Kinder zu verfolgen.
